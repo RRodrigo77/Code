@@ -1,6 +1,6 @@
 // Chamada da conexão
 const dbEscola = require('../dbEscola');
-// teste
+
 module.exports = {
 
     buscarAlunos: () => {
