@@ -16,5 +16,3 @@ connection.connect((error)=>{
 
 //exportando a conexão
 module.exports = connection;
-
-/*Test commit */
