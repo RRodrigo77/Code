@@ -10,9 +10,9 @@ module.exports = {
 
         for(let i in Aluno){
             json.result.push({
-                id: Aluno[i].id_aluno,
-                nome: Aluno[i].nome_aluno,
-                sexo: Aluno[i].sexo_aluno                
+                id: Aluno[i].IdAluno,
+                nome: Aluno[i].NomeAluno,
+                sexo: Aluno[i].Sexo                
             });
         }
         res.json(json);
