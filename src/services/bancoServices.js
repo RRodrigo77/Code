@@ -6,7 +6,7 @@ module.exports = {
     buscarAlunos: () => {
         return new Promise((aceito, rejeitado) => {
 
-            dbEscola.query('SELECT * FROM Aluno', (error, result) => {
+            dbEscola.query('SELECT * FROM TbAluno', (error, result) => {
                 if (error) { rejeitado(error); return; }
                 aceito(result);
             });
