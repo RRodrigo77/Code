@@ -1,6 +1,6 @@
 const BancoServices = require('../services/bancoServices');
 
-//Implementação de todas as consultas
+//Implementação do retorno json
 
 module.exports = {
     buscarAlunos: async(req, res)=>{
@@ -12,9 +12,21 @@ module.exports = {
             json.result.push({
                 id: Aluno[i].IdAluno,
                 nome: Aluno[i].nomeAluno,
-                data_nascimento: Aluno[i].data_nascimento                
+                matricula: Aluno[i].matricula               
             });
         }
         res.json(json);
     },
+
+    buscarAlunoPorNome: async(req, res)=>{
+        let json = {error:'', result:[]};
+
+        let nomeAluno = req.params.buscanome;        
+        let Aluno = await BancoServices.buscarAlunoPorNome(nomeAluno);
+
+        if(Aluno){
+            json.result = Aluno;
+        }
+        res.json(json);
+    }
 }
