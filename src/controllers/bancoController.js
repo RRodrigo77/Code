@@ -21,8 +21,8 @@ module.exports = {
     buscarAlunoPorNome: async(req, res)=>{
         let json = {error:'', result:[]};
 
-        let nomeAluno = req.params.buscanome;        
-        let Aluno = await BancoServices.buscarAlunoPorNome(nomeAluno);
+        let nome = req.params.nome;        
+        let Aluno = await BancoServices.buscarAlunoPorNome(nome);
 
         if(Aluno){
             json.result = Aluno;

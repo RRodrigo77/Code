@@ -7,6 +7,11 @@
 </head>
 <body>
     <h1>Listagem de Alunos</h1>
+    <form id="busca-alunos">
+        <label for="nome">Nome:</label>
+        <input type="text" id="nome" name="nome">
+        <button type="submit">Buscar</button>
+    </form>
     <table id="tabela-alunos">
         <thead>
             <tr>
@@ -19,38 +24,46 @@
         </tbody>
     </table>
     <script>
-        // Faz a requisição AJAX ao endpoint da API buscarAlunos
-        fetch(`http://localhost:3000/api/aluno`)
-            .then(response => response.json())
-            .then(data => {
-                // Limpa a tabela antes de preencher com os novos dados
-                const tabela = document.getElementById('tabela-alunos');
-                const corpoTabela = tabela.querySelector('tbody');
-                corpoTabela.innerHTML = '';
+        const formBusca = document.getElementById('busca-alunos');
+        const tabela = document.getElementById('tabela-alunos');
+        const corpoTabela = tabela.querySelector('tbody');
 
-                if (data.error) {
-                    // Exibe mensagem de erro caso ocorra algum problema
-                    console.error(data.error);
-                    alert('Ocorreu um erro ao buscar os alunos.');
-                } else {
-                    // Preenche a tabela com os dados dos alunos
-                    for (let i = 0; i < data.result.length; i++) {
-                        const aluno = data.result[i];
-                        const linha = document.createElement('tr');
-                        linha.innerHTML = `
-                            <td>${aluno.id}</td>
-                            <td>${aluno.nome}</td>
-                            <td>${aluno.matricula}</td>
-                        `;
-                        corpoTabela.appendChild(linha);
+        formBusca.addEventListener('submit', (event) => {
+            event.preventDefault();
+
+            const inputNome = document.getElementById('nome');
+            const nome = inputNome.value;
+
+            fetch(`http://localhost:3000/api/aluno/${nome}`)
+                .then(response => response.json())
+                .then(data => {
+                    // Limpa a tabela antes de preencher com os novos dados
+                    corpoTabela.innerHTML = '';
+
+                    if (data.error) {
+                        // Exibe mensagem de erro caso ocorra algum problema
+                        console.error(data.error);
+                        alert('Ocorreu um erro ao buscar os alunos.');
+                    } else {
+                        // Preenche a tabela com os dados dos alunos
+                        for (let i = 0; i < data.result.length; i++) {
+                            const aluno = data.result[i];
+                            const linha = document.createElement('tr');
+                            linha.innerHTML = `
+                                <td>${aluno.IdAluno}</td>
+                                <td>${aluno.nomeAluno}</td>
+                                <td>${aluno.matricula}</td>
+                            `;
+                            corpoTabela.appendChild(linha);
+                        }
                     }
-                }
-            })
-            .catch(error => {
-                // Exibe mensagem de erro caso ocorra algum problema na requisição
-                console.error(error);
-                alert('Ocorreu um erro ao buscar os alunos.');
-            });
+                })
+                .catch(error => {
+                    // Exibe mensagem de erro caso ocorra algum problema na requisição
+                    console.error(error);
+                    alert('Ocorreu um erro ao buscar os alunos.');
+                });
+        });
     </script>
 </body>
 </html>
