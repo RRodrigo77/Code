@@ -1,9 +1,9 @@
+ # Criação do banco
  create database dbEscola;
  
  use dbEscola;
- 
-drop table TbAluno
 
+# Criação da tabela Aluno 
 SELECT * FROM TBaluno
 
 CREATE TABLE TbAluno (
@@ -23,14 +23,11 @@ CREATE TABLE TbAluno (
     PRIMARY KEY (IdAluno)
 );
 
+# Ajuste na tabela Aluno para Matricula receber valor null
 ALTER TABLE TbAluno MODIFY COLUMN matricula INT NULL;
 
-ALTER TABLE TbAluno 
-ADD CONSTRAINT FK_Aluno_Endereco 
-FOREIGN KEY (IdEndereco) 
-REFERENCES TbEndereco (IdEndereco);
 
-
+# Criação da Tabela dos responsáveis
 CREATE TABLE TbResponsavel(
 	IdResponsavel INT AUTO_INCREMENT,
     NomeR VARCHAR(100) NOT NULL,
@@ -44,15 +41,7 @@ CREATE TABLE TbResponsavel(
     PRIMARY KEY (IdResponsavel)
 )
 
-
-
-
-ALTER TABLE TbResponsavel 
-ADD CONSTRAINT FK_Responsavel_Endereco 
-FOREIGN KEY (IdEndereco) 
-REFERENCES TbEndereco (IdEndereco);
-
-
+# Criação da Tabela endereço
 CREATE TABLE TbEndereco (
     IdEndereco INT PRIMARY KEY AUTO_INCREMENT,
     cep VARCHAR(8) NOT NULL,
@@ -64,6 +53,20 @@ CREATE TABLE TbEndereco (
     complemento VARCHAR(200)
 );
 
+# INserção de chave estrangeira para endereço
+ALTER TABLE TbResponsavel 
+ADD CONSTRAINT FK_Responsavel_Endereco 
+FOREIGN KEY (IdEndereco) 
+REFERENCES TbEndereco (IdEndereco);
+
+
+# Adicionado chave estrangeira a TbAluno IdEndereco
+ALTER TABLE TbAluno 
+ADD CONSTRAINT FK_Aluno_Endereco 
+FOREIGN KEY (IdEndereco) 
+REFERENCES TbEndereco (IdEndereco);
+
+# Criação da tabela do professor
 CREATE TABLE TbProfessor (
     IdProfessor INT PRIMARY KEY AUTO_INCREMENT,
     NomeProfessor VARCHAR(100) NOT NULL,
@@ -75,12 +78,13 @@ CREATE TABLE TbProfessor (
     StAtivo BIT NOT NULL
 );
 
+# CHave estrangeira do endereço
 ALTER TABLE TbProfessor 
 ADD CONSTRAINT FK_Professor_Endereco 
 FOREIGN KEY (IdEndereco) 
 REFERENCES TbEndereco (IdEndereco);
 
-
+# criação da tabela de disciplinas
 CREATE TABLE TbDisciplina (
     IdDisciplina INT PRIMARY KEY AUTO_INCREMENT,
     NomeDisciplina VARCHAR(100) NOT NULL,
@@ -88,13 +92,14 @@ CREATE TABLE TbDisciplina (
     StAtivo BIT NOT NULL
 );
 
+# Tabela dos cursos
 CREATE TABLE TbCurso (
     IdCurso INT PRIMARY KEY AUTO_INCREMENT,
     NomeCurso VARCHAR(100) NOT NULL,
     StOficial BIT NOT NULL
 );
 
-
+# Tabela das séries
 CREATE TABLE TbSerie (
     IdSerie INT AUTO_INCREMENT,
     NomeSerie VARCHAR(100) NOT NULL,
@@ -103,14 +108,7 @@ CREATE TABLE TbSerie (
     FOREIGN KEY (IdCurso) REFERENCES TbCurso(IdCurso)
 );
 
-select * from Tbserie
-
-ALTER TABLE TbSerie
-ADD COLUMN IdPeriodo INT;
-
-ALTER TABLE TbSerie
-ADD CONSTRAINT fk_Serie_Periodo FOREIGN KEY (IdPeriodo) REFERENCES TbPeriodo(IdPeriodo);
-
+# Criação da tabela do período
 CREATE TABLE TbPeriodo (
     IdPeriodo INT AUTO_INCREMENT,
     PeriodoNumero INT NOT NULL,
@@ -121,24 +119,15 @@ CREATE TABLE TbPeriodo (
     PRIMARY KEY (IdPeriodo)
 );
 
-INSERT INTO TbPeriodo (PeriodoNumero, NomePeriodo, DataInicial, DataFinal)
-VALUES ('2022', 'Período 2022', '2022-01-01', '2022-12-31');
-
-delete from TbAluno where IdAluno > '23';
-
-select * from Tbaluno;
-
-select * from tbperiodo;
-
-UPDATE TbPeriodo SET PeriodoAtual = 0 WHERE IdPeriodo = 2;
-UPDATE TbPeriodo SET PeriodoNumero = 2024 WHERE IdPeriodo = 1;
+#inserção de IdPeriodo estrangeiro
+ALTER TABLE TbSerie
+ADD COLUMN IdPeriodo INT;
 
 
-INSERT INTO TbAluno (nomeAluno, data_nascimento, CPF, RG, telefone, Sexo)
-VALUES ('jose', '1995-03-11', '10394343476', '002513202','(84) 999434387', 'M');
+ALTER TABLE TbSerie
+ADD CONSTRAINT fk_Serie_Periodo FOREIGN KEY (IdPeriodo) REFERENCES TbPeriodo(IdPeriodo);
 
-DROP TRIGGER IF EXISTS tr_insere_matricula_aluno;
-
+# Criação de uma trigger para quando inserir um caluno o mesmo ter uma matricula inserida usando o período atual
 DELIMITER //
 CREATE TRIGGER tr_insere_matricula_aluno
 BEFORE INSERT ON TbAluno
@@ -150,3 +139,20 @@ BEGIN
     SET NEW.Matricula = CONCAT(@periodoNumero, LPAD(prox_num, 4, '0'));
 END//
 DELIMITER ;
+
+# Criação da tabela turma
+CREATE TABLE TbTurma (
+    IdTurma INT AUTO_INCREMENT,
+    NomeTurma VARCHAR(100) NOT NULL,
+    SiglaTurma VARCHAR(100) NOT NULL,
+    IdCurso INT NOT NULL,
+    IdSerie INT NOT NULL,
+    IdPeriodo INT NOT NULL,
+    PRIMARY KEY (IdTurma),
+    FOREIGN KEY (IdCurso) REFERENCES TbCurso(IdCurso),
+    FOREIGN KEY (IdSerie) REFERENCES TbSerie(IdSerie),
+    FOREIGN KEY (IdPeriodo) REFERENCES TbPeriodo(IdPeriodo)
+);
+
+
+
