@@ -4,8 +4,6 @@
  use dbEscola;
 
 # Criação da tabela Aluno 
-SELECT * FROM TBaluno
-
 CREATE TABLE TbAluno (
     IdAluno INT AUTO_INCREMENT,
     nomeAluno VARCHAR(100) NOT NULL,
@@ -155,4 +153,4 @@ CREATE TABLE TbTurma (
 );
 
 
-
+SELECT * FROM TBturma
