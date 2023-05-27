@@ -15,7 +15,7 @@ module.exports = {
 
     buscarAlunoPorNome: (nome) => {
         return new Promise((aceito, rejeitado) => {
-            dbEscola.query('SELECT * FROM TbAluno WHERE nomeAluno = ?', [nome], (error, result) => {
+            dbEscola.query('SELECT * FROM TbAluno WHERE nomeAluno LIKE ?', [`%${nome}%`], (error, result) => {
                 if (error) { rejeitado(error); return; }
                 if(result.length > [0]){
                     aceito(result);

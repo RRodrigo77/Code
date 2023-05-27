@@ -152,5 +152,85 @@ CREATE TABLE TbTurma (
     FOREIGN KEY (IdPeriodo) REFERENCES TbPeriodo(IdPeriodo)
 );
 
+# Criação da tabela para grade curriculas
+CREATE TABLE TbGrade (
+  IdGrade INT AUTO_INCREMENT,
+  IdCurso INT,
+  IdPeriodo INT,
+  IdSerie INT,
+  IdDisciplina INT,
+  PRIMARY KEY (IdGrade),
+  FOREIGN KEY (IdCurso) REFERENCES TbCurso(IdCurso),
+  FOREIGN KEY (IdPeriodo) REFERENCES TbPeriodo(IdPeriodo),
+  FOREIGN KEY (IdSerie) REFERENCES TbSerie(IdSerie),
+  FOREIGN KEY (IdDisciplina) REFERENCES TbDisciplina(IdDisciplina)
+);
 
-SELECT * FROM TBturma
+# Criação de procidure para acrecentar um número de disciplinas na TbGrade
+DELIMITER $$
+CREATE PROCEDURE add_disciplina_column()
+BEGIN
+    DECLARE contador INT;
+    DECLARE coluna VARCHAR(50);
+    SELECT COUNT(*) INTO contador FROM information_schema.columns WHERE table_name = 'TbGrade' AND column_name LIKE 'IdDisciplina%';
+    SET coluna = CONCAT('IdDisciplina', contador + 1);
+    SET @sql_query = CONCAT('ALTER TABLE TbGrade ADD ', coluna, ' INT NULL');
+    PREPARE stmt FROM @sql_query;
+    EXECUTE stmt;
+END$$
+DELIMITER ;
+
+CALL add_disciplina_column();
+
+
+
+#inserção de IdGrade na tabela TbSerie estrangeiro
+ALTER TABLE TbSerie
+ADD COLUMN IdGrade INT;
+
+ALTER TABLE TbSerie
+ADD CONSTRAINT fk_Serie_Grade FOREIGN KEY (IdGrade) REFERENCES TbGrade(IdGrade);
+
+INSERT INTO TbTurma (NomeTurma, SiglaTurma, IdCurso, IdSerie, IdPeriodo) VALUES ('Turma A', 'A', 2, 9, 1);
+SELECT * FROM tbturma;
+SELECT * FROM tbcurso;
+SELECT * FROM tbserie;
+
+UPDATE TBTURMA SET SiglaTurma = 'A' where IdTurma = 11
+
+CREATE TABLE TbAlunoTurma (
+  IdAlunoTurma INT AUTO_INCREMENT,
+  IdTurma INT,
+  IdAluno INT,
+  PRIMARY KEY (IdAlunoTurma),
+  FOREIGN KEY (IdAluno) REFERENCES TbAluno(IdAluno)
+);
+
+SELECT * FROM tbAlunoTurma
+SELECT * FROM tbTurma
+
+ALTER TABLE Tbalunoturma
+ADD COLUMN StAlunoTurma BIT NOT NULL DEFAULT 1;
+
+INSERT INTO TbAlunoTurma (IdTurma, IdAluno) values (11,23)
+
+
+CREATE VIEW Vw_Turma_Situacao AS
+SELECT c.NomeCurso AS 'Curso', s.NomeSerie AS 'Série', t.NomeTurma AS 'Turma', t.SiglaTurma AS 'Sigla', 
+a.NomeAluno AS 'Nome do Aluno',
+CASE WHEN at.StAlunoTurma = 1 THEN 'Ativo' ELSE 'Inativo' END AS 'Situação do aluno',
+p.NomePeriodo AS 'Período'
+FROM TbAlunoTurma at
+INNER JOIN TbAluno a ON a.IdAluno = at.IdAluno
+INNER JOIN TbTurma t ON t.IdTurma = at.IdTurma
+INNER JOIN TbSerie s ON s.IdSerie = t.IdSerie
+INNER JOIN TbCurso c ON c.IdCurso = s.IdCurso
+INNER JOIN TbPeriodo p ON p.IdPeriodo = s.IdPeriodo;
+
+SELECT * FROM Vw_Turma_Situacao where IdAluno = 12;
+
+SELECT *
+FROM Vw_Turma_Situacao
+WHERE Idturma = 12;
+
+DESCRIBE Vw_Turma_Situacao;
