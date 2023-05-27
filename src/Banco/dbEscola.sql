@@ -234,3 +234,5 @@ FROM Vw_Turma_Situacao
 WHERE Idturma = 12;
 
 DESCRIBE Vw_Turma_Situacao;
+
+INSERT INTO TbAluno (NomeAluno, Data_nascimento, CPF, RG, sexo, telefone) VALUES ('Rafael', '1995-03-11', 09812309878, 20234276, 'M', '849999999')
