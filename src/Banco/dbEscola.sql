@@ -125,6 +125,10 @@ ADD COLUMN IdPeriodo INT;
 ALTER TABLE TbSerie
 ADD CONSTRAINT fk_Serie_Periodo FOREIGN KEY (IdPeriodo) REFERENCES TbPeriodo(IdPeriodo);
 
+ALTER TABLE TbSerie DROP FOREIGN KEY fk_Serie_GRADE;
+ALTER TABLE TbSerie DROP COLUMN Idgrade;
+
+
 # Criação de uma trigger para quando inserir um caluno o mesmo ter uma matricula inserida usando o período atual
 DELIMITER //
 CREATE TRIGGER tr_insere_matricula_aluno
@@ -151,6 +155,7 @@ CREATE TABLE TbTurma (
     FOREIGN KEY (IdSerie) REFERENCES TbSerie(IdSerie),
     FOREIGN KEY (IdPeriodo) REFERENCES TbPeriodo(IdPeriodo)
 );
+
 
 # Criação da tabela para grade curriculas
 CREATE TABLE TbGrade (
@@ -182,22 +187,7 @@ DELIMITER ;
 
 CALL add_disciplina_column();
 
-
-
-#inserção de IdGrade na tabela TbSerie estrangeiro
-ALTER TABLE TbSerie
-ADD COLUMN IdGrade INT;
-
-ALTER TABLE TbSerie
-ADD CONSTRAINT fk_Serie_Grade FOREIGN KEY (IdGrade) REFERENCES TbGrade(IdGrade);
-
-INSERT INTO TbTurma (NomeTurma, SiglaTurma, IdCurso, IdSerie, IdPeriodo) VALUES ('Turma A', 'A', 2, 9, 1);
-SELECT * FROM tbturma;
-SELECT * FROM tbcurso;
-SELECT * FROM tbserie;
-
-UPDATE TBTURMA SET SiglaTurma = 'A' where IdTurma = 11
-
+# Criação da Tabela Aluno turma
 CREATE TABLE TbAlunoTurma (
   IdAlunoTurma INT AUTO_INCREMENT,
   IdTurma INT,
@@ -206,33 +196,25 @@ CREATE TABLE TbAlunoTurma (
   FOREIGN KEY (IdAluno) REFERENCES TbAluno(IdAluno)
 );
 
-SELECT * FROM tbAlunoTurma
-SELECT * FROM tbTurma
-
+# Inserida situação do aluno na turma para verificar se aluno está ativo ou não
 ALTER TABLE Tbalunoturma
 ADD COLUMN StAlunoTurma BIT NOT NULL DEFAULT 1;
 
-INSERT INTO TbAlunoTurma (IdTurma, IdAluno) values (11,23)
+# Criada VIEW para visualizar os alunos por turma
+CREATE VIEW VW_Aluno_Situacao AS
+SELECT TbPeriodo.NomePeriodo, TbSerie.NomeSerie, TbCurso.NomeCurso, TbTurma.NomeTurma, TbTurma.SiglaTurma, TbAluno.Matricula, TbAluno.NomeAluno, 
+CASE Tbalunoturma.Stalunoturma 
+            WHEN 1 THEN 'Ativo' 
+            WHEN 0 THEN 'Inativo' 
+       END AS StAlunoTurma
+FROM TbAluno 
+INNER JOIN Tbalunoturma ON TbAluno.IdAluno = Tbalunoturma.Idaluno 
+INNER JOIN TbTurma ON TbTurma.Idturma = Tbalunoturma.Idturma 
+INNER JOIN TbSerie ON TbSerie.IdSerie = TbTurma.IdSerie 
+INNER JOIN TbCurso ON TbCurso.IdCurso = TbSerie.IdCurso 
+INNER JOIN TbPeriodo ON TbPeriodo.IdPeriodo = TbTurma.IdPeriodo;
 
+# Teste para manupular a visualização da VW
+SELECT * FROM VW_Aluno_Situacao
+WHERE NomeTurma = 'Turma B';
 
-CREATE VIEW Vw_Turma_Situacao AS
-SELECT c.NomeCurso AS 'Curso', s.NomeSerie AS 'Série', t.NomeTurma AS 'Turma', t.SiglaTurma AS 'Sigla', 
-a.NomeAluno AS 'Nome do Aluno',
-CASE WHEN at.StAlunoTurma = 1 THEN 'Ativo' ELSE 'Inativo' END AS 'Situação do aluno',
-p.NomePeriodo AS 'Período'
-FROM TbAlunoTurma at
-INNER JOIN TbAluno a ON a.IdAluno = at.IdAluno
-INNER JOIN TbTurma t ON t.IdTurma = at.IdTurma
-INNER JOIN TbSerie s ON s.IdSerie = t.IdSerie
-INNER JOIN TbCurso c ON c.IdCurso = s.IdCurso
-INNER JOIN TbPeriodo p ON p.IdPeriodo = s.IdPeriodo;
-
-SELECT * FROM Vw_Turma_Situacao where IdAluno = 12;
-
-SELECT *
-FROM Vw_Turma_Situacao
-WHERE Idturma = 12;
-
-DESCRIBE Vw_Turma_Situacao;
-
-INSERT INTO TbAluno (NomeAluno, Data_nascimento, CPF, RG, sexo, telefone) VALUES ('Rafael', '1995-03-11', 09812309878, 20234276, 'M', '849999999')
