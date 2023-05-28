@@ -391,14 +391,8 @@ CREATE TABLE `tbserie` (
   `IdSerie` int NOT NULL AUTO_INCREMENT,
   `NomeSerie` varchar(100) NOT NULL,
   `IdCurso` int NOT NULL,
-  `IdPeriodo` int DEFAULT NULL,
-  `IdGrade` int DEFAULT NULL,
   PRIMARY KEY (`IdSerie`),
   KEY `IdCurso` (`IdCurso`),
-  KEY `fk_Serie_Periodo` (`IdPeriodo`),
-  KEY `fk_Serie_Grade` (`IdGrade`),
-  CONSTRAINT `fk_Serie_Grade` FOREIGN KEY (`IdGrade`) REFERENCES `tbgrade` (`IdGrade`),
-  CONSTRAINT `fk_Serie_Periodo` FOREIGN KEY (`IdPeriodo`) REFERENCES `tbperiodo` (`IdPeriodo`),
   CONSTRAINT `tbserie_ibfk_1` FOREIGN KEY (`IdCurso`) REFERENCES `tbcurso` (`IdCurso`)
 ) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -409,7 +403,7 @@ CREATE TABLE `tbserie` (
 
 LOCK TABLES `tbserie` WRITE;
 /*!40000 ALTER TABLE `tbserie` DISABLE KEYS */;
-INSERT INTO `tbserie` VALUES (1,'1° Ano',2,1,NULL),(2,'2° Ano',2,1,NULL),(3,'3° Ano',2,1,NULL),(4,'4° Ano',2,1,NULL),(5,'5° Ano',2,1,NULL),(6,'6° Ano',3,1,NULL),(7,'7° Ano',3,1,NULL),(8,'8° Ano',3,1,NULL),(9,'9° Ano',3,1,NULL);
+INSERT INTO `tbserie` VALUES (1,'1° Ano',2),(2,'2° Ano',2),(3,'3° Ano',2),(4,'4° Ano',2),(5,'5° Ano',2),(6,'6° Ano',3),(7,'7° Ano',3),(8,'8° Ano',3),(9,'9° Ano',3);
 /*!40000 ALTER TABLE `tbserie` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -448,28 +442,29 @@ INSERT INTO `tbturma` VALUES (1,'Turma A','A',2,1,1),(2,'Turma B','B',2,1,1),(3,
 UNLOCK TABLES;
 
 --
--- Temporary view structure for view `vw_turma_situacao`
+-- Temporary view structure for view `vw_aluno_situacao`
 --
 
-DROP TABLE IF EXISTS `vw_turma_situacao`;
-/*!50001 DROP VIEW IF EXISTS `vw_turma_situacao`*/;
+DROP TABLE IF EXISTS `vw_aluno_situacao`;
+/*!50001 DROP VIEW IF EXISTS `vw_aluno_situacao`*/;
 SET @saved_cs_client     = @@character_set_client;
 /*!50503 SET character_set_client = utf8mb4 */;
-/*!50001 CREATE VIEW `vw_turma_situacao` AS SELECT 
- 1 AS `Curso`,
- 1 AS `Série`,
- 1 AS `Turma`,
- 1 AS `Sigla`,
- 1 AS `Nome do Aluno`,
- 1 AS `Situação do aluno`,
- 1 AS `Período`*/;
+/*!50001 CREATE VIEW `vw_aluno_situacao` AS SELECT 
+ 1 AS `NomePeriodo`,
+ 1 AS `NomeSerie`,
+ 1 AS `NomeCurso`,
+ 1 AS `NomeTurma`,
+ 1 AS `SiglaTurma`,
+ 1 AS `Matricula`,
+ 1 AS `NomeAluno`,
+ 1 AS `StAlunoTurma`*/;
 SET character_set_client = @saved_cs_client;
 
 --
--- Final view structure for view `vw_turma_situacao`
+-- Final view structure for view `vw_aluno_situacao`
 --
 
-/*!50001 DROP VIEW IF EXISTS `vw_turma_situacao`*/;
+/*!50001 DROP VIEW IF EXISTS `vw_aluno_situacao`*/;
 /*!50001 SET @saved_cs_client          = @@character_set_client */;
 /*!50001 SET @saved_cs_results         = @@character_set_results */;
 /*!50001 SET @saved_col_connection     = @@collation_connection */;
@@ -478,7 +473,7 @@ SET character_set_client = @saved_cs_client;
 /*!50001 SET collation_connection      = utf8mb4_0900_ai_ci */;
 /*!50001 CREATE ALGORITHM=UNDEFINED */
 /*!50013 DEFINER=`root`@`localhost` SQL SECURITY DEFINER */
-/*!50001 VIEW `vw_turma_situacao` AS select `c`.`NomeCurso` AS `Curso`,`s`.`NomeSerie` AS `Série`,`t`.`NomeTurma` AS `Turma`,`t`.`SiglaTurma` AS `Sigla`,`a`.`nomeAluno` AS `Nome do Aluno`,(case when (`at`.`StAlunoTurma` = 1) then 'Ativo' else 'Inativo' end) AS `Situação do aluno`,`p`.`NomePeriodo` AS `Período` from (((((`tbalunoturma` `at` join `tbaluno` `a` on((`a`.`IdAluno` = `at`.`IdAluno`))) join `tbturma` `t` on((`t`.`IdTurma` = `at`.`IdTurma`))) join `tbserie` `s` on((`s`.`IdSerie` = `t`.`IdSerie`))) join `tbcurso` `c` on((`c`.`IdCurso` = `s`.`IdCurso`))) join `tbperiodo` `p` on((`p`.`IdPeriodo` = `s`.`IdPeriodo`))) */;
+/*!50001 VIEW `vw_aluno_situacao` AS select `tbperiodo`.`NomePeriodo` AS `NomePeriodo`,`tbserie`.`NomeSerie` AS `NomeSerie`,`tbcurso`.`NomeCurso` AS `NomeCurso`,`tbturma`.`NomeTurma` AS `NomeTurma`,`tbturma`.`SiglaTurma` AS `SiglaTurma`,`tbaluno`.`matricula` AS `Matricula`,`tbaluno`.`nomeAluno` AS `NomeAluno`,(case `tbalunoturma`.`StAlunoTurma` when 1 then 'Ativo' when 0 then 'Inativo' end) AS `StAlunoTurma` from (((((`tbaluno` join `tbalunoturma` on((`tbaluno`.`IdAluno` = `tbalunoturma`.`IdAluno`))) join `tbturma` on((`tbturma`.`IdTurma` = `tbalunoturma`.`IdTurma`))) join `tbserie` on((`tbserie`.`IdSerie` = `tbturma`.`IdSerie`))) join `tbcurso` on((`tbcurso`.`IdCurso` = `tbserie`.`IdCurso`))) join `tbperiodo` on((`tbperiodo`.`IdPeriodo` = `tbturma`.`IdPeriodo`))) */;
 /*!50001 SET character_set_client      = @saved_cs_client */;
 /*!50001 SET character_set_results     = @saved_cs_results */;
 /*!50001 SET collation_connection      = @saved_col_connection */;
@@ -492,4 +487,4 @@ SET character_set_client = @saved_cs_client;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2023-05-27  4:24:05
+-- Dump completed on 2023-05-27 22:06:22
