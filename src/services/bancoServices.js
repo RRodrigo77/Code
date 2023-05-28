@@ -24,6 +24,18 @@ module.exports = {
                 }
             });
         });
-    }
+    },
 
+    dadosAlunos: (nome) => {
+        return new Promise((aceito, rejeitado) => {
+            dbEscola.query(' criar consulta para tela de dados', [`%${nome}%`], (error, result) => {
+                if (error) { rejeitado(error); return; }
+                if(result.length > [0]){
+                    aceito(result);
+                }else{
+                    aceito(false);
+                }
+            });
+        });
+    }
 }

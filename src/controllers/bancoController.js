@@ -28,5 +28,17 @@ module.exports = {
             json.result = Aluno;
         }
         res.json(json);
+    },
+
+    dadosAlunos: async(req, res)=>{
+        let json = {error:'', result:[]};
+
+        let nome = req.params.nome;        
+        let Aluno = await BancoServices.dadosAlunos(nome);
+
+        if(Aluno){
+            json.result = Aluno;
+        }
+        res.json(json);
     }
 }
