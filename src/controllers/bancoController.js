@@ -7,34 +7,43 @@ module.exports = {
         let json = {error:'', result:[]};
 
         let Aluno = await BancoServices.buscarAlunos();
-        // for(let i in Aluno){
-        //     json.result.push(
-        //     {
-        //         label: "Periodo", value: Aluno[i].NomePeriodo
-        //     },
-        //     {
-        //         label: "Nome", value: Aluno[i].NomeAluno
-        //     },
-        //     {
-        //         label: "Situação", value: Aluno[i].StAlunoTurma
-        //     },
-        // );
-        // for(let i in Aluno){
-        //     json.result.push({
-        //         Periodo: Aluno[i].NomePeriodo,
-        //         nomeSerie: Aluno[i].nomeSerie,
-        //         nomeCurso: Aluno[i].nomeCurso,
-        //         nomeTurma:Aluno[i].nomeTurma,
-        //         SiglaTurma: Aluno[i].siglaTurma,
-        //         matricula: Aluno[i].matricula,
-        //         NomeAluno: Aluno[i].NomeAluno,
-        //         StAlunoTurma: Aluno[i].StAlunoTurma
-        //     });
-        // }
-        // res.json(json);
 
-        if(Aluno){
-            json.result = Aluno;
+        // json.result.push({
+        //     NomePeriodo: Aluno[i].NomePeriodo,    
+        //     NomeSerie: Aluno[i].NomeSerie,
+        //     NomeCurso: Aluno[i].NomeCurso,
+        //     NomeTurma:Aluno[i].NomeTurma,
+        //     SiglaTurma: Aluno[i].SiglaTurma,
+        //     Matricula: Aluno[i].Matricula,
+        //     NomeAluno: Aluno[i].NomeAluno,
+        //     StAlunoTurma: Aluno[i].StAlunoTurma
+        // });
+
+        for(let i in Aluno){
+            json.result.push(
+            {
+                label: "Nome", value: Aluno[i].NomeAluno
+            },
+            {
+                label: "Matricula", value: Aluno[i].Matricula
+            }, 
+            {
+                label: "Situação", value: Aluno[i].StAlunoTurma
+            },
+            {
+                label: "Período Letivo", value: Aluno[i].NomePeriodo
+            },
+            {
+                label: "Série", value: Aluno[i].NomeSerie
+            },
+            {
+                label: "Curso", value: Aluno[i].NomeCurso
+            },
+            {
+                label: "Turma", value: Aluno[i].NomeTurma
+            },          
+            
+            );
         }
         res.json(json);
     },
