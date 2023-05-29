@@ -28,7 +28,7 @@ module.exports = {
 
     dadosAlunos: (matricula) => {
         return new Promise((aceito, rejeitado) => {
-            dbEscola.query('SELECT * FROM TbAluno WHERE matricula = ?', [`%${matricula}%`], (error, result) => {
+            dbEscola.query('SELECT * FROM TbAluno WHERE NomeAluno = ?', [`%${matricula}%`], (error, result) => {
                 if (error) { rejeitado(error); return; }
                 if(result.length > [0]){
                     aceito(result);

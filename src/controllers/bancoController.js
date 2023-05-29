@@ -8,17 +8,21 @@ module.exports = {
 
         let Aluno = await BancoServices.buscarAlunos();
 
-        for(let i in Aluno){
-            json.result.push({
-                Periodo: Aluno[i].NomePeriodo,
-                nomeSerie: Aluno[i].nomeSerie,
-                nomeCurso: Aluno[i].nomeCurso,
-                nomeTurma:Aluno[i].nomeTurma,
-                SiglaTurma: Aluno[i].siglaTurma,
-                matricula: Aluno[i].matricula,
-                NomeAluno: Aluno[i].NomeAluno,
-                StAlunoTurma: Aluno[i].StAlunoTurma
-            });
+        // for(let i in Aluno){
+        //     json.result.push({
+        //         NomePeriodo: Aluno[i].NomePeriodo,
+        //         NomeSerie: Aluno[i].NomeSerie,
+        //         NomeCurso: Aluno[i].NomeCurso,
+        //         NomeTurma:Aluno[i].NomeTurma,
+        //         SiglaTurma: Aluno[i].SiglaTurma,
+        //         Matricula: Aluno[i].Matricula,
+        //         NomeAluno: Aluno[i].NomeAluno,
+        //         StAlunoTurma: Aluno[i].StAlunoTurma
+        //     });
+        // }
+        // res.json(json);
+        if(Aluno){
+            json.result = Aluno;
         }
         res.json(json);
     },
