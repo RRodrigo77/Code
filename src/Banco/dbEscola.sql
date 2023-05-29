@@ -215,6 +215,8 @@ INNER JOIN TbCurso ON TbCurso.IdCurso = TbSerie.IdCurso
 INNER JOIN TbPeriodo ON TbPeriodo.IdPeriodo = TbTurma.IdPeriodo;
 
 # Teste para manupular a visualização da VW
-SELECT * FROM VW_Aluno_Situacao
+SELECT * FROM VW_Aluno_Situacao WHERE idaluno = 23
 WHERE NomeTurma = 'Turma B';
+DESCRIBE VW_Aluno_Situacao
+select * from tbaluno where NomeAluno = "rodrigo"
 

@@ -34,7 +34,7 @@
             const inputNome = document.getElementById('nome');
             const nome = inputNome.value;
 
-            fetch(`http://localhost:3000/api/alunodados/${nome}`)
+            fetch(`http://localhost:3000/api/aluno/${nome}`)
                 .then(response => response.json())
                 .then(data => {
                     // Limpa a tabela antes de preencher com os novos dados

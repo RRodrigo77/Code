@@ -10,9 +10,14 @@ module.exports = {
 
         for(let i in Aluno){
             json.result.push({
-                id: Aluno[i].IdAluno,
-                nome: Aluno[i].nomeAluno,
-                matricula: Aluno[i].matricula               
+                Periodo: Aluno[i].NomePeriodo,
+                nomeSerie: Aluno[i].nomeSerie,
+                nomeCurso: Aluno[i].nomeCurso,
+                nomeTurma:Aluno[i].nomeTurma,
+                SiglaTurma: Aluno[i].siglaTurma,
+                matricula: Aluno[i].matricula,
+                NomeAluno: Aluno[i].NomeAluno,
+                StAlunoTurma: Aluno[i].StAlunoTurma
             });
         }
         res.json(json);
@@ -33,8 +38,8 @@ module.exports = {
     dadosAlunos: async(req, res)=>{
         let json = {error:'', result:[]};
 
-        let nome = req.params.nome;        
-        let Aluno = await BancoServices.dadosAlunos(nome);
+        let matricula = req.params.matricula;        
+        let Aluno = await BancoServices.dadosAlunos(matricula);
 
         if(Aluno){
             json.result = Aluno;

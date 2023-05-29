@@ -6,7 +6,7 @@ module.exports = {
     buscarAlunos: () => {
         return new Promise((aceito, rejeitado) => {
 
-            dbEscola.query('SELECT * FROM TbAluno', (error, result) => {
+            dbEscola.query("SELECT * FROM VW_Aluno_Situacao WHERE NomeAluno = 'miguel'", (error, result) => {
                 if (error) { rejeitado(error); return; }
                 aceito(result);
             });
@@ -26,9 +26,9 @@ module.exports = {
         });
     },
 
-    dadosAlunos: (nome) => {
+    dadosAlunos: (matricula) => {
         return new Promise((aceito, rejeitado) => {
-            dbEscola.query(' criar consulta para tela de dados', [`%${nome}%`], (error, result) => {
+            dbEscola.query('SELECT * FROM TbAluno WHERE matricula = ?', [`%${matricula}%`], (error, result) => {
                 if (error) { rejeitado(error); return; }
                 if(result.length > [0]){
                     aceito(result);
