@@ -22,25 +22,25 @@ module.exports = {
         for(let i in Aluno){
             json.result.push(
             {
-                label: "Nome:", value: Aluno[i].NomeAluno
+                label: "Nome", value: Aluno[i].NomeAluno
             },
             {
-                label: "Matricula:", value: Aluno[i].Matricula
+                label: "Matricula", value: Aluno[i].Matricula
             }, 
             {
-                label: "Situação:", value: Aluno[i].StAlunoTurma
+                label: "Situação", value: Aluno[i].StAlunoTurma
             },
             {
-                label: "Período Letivo:", value: Aluno[i].NomePeriodo
+                label: "Período Letivo", value: Aluno[i].NomePeriodo
             },
             {
-                label: "Série:", value: Aluno[i].NomeSerie
+                label: "Série", value: Aluno[i].NomeSerie
             },
             {
-                label: "Curso:", value: Aluno[i].NomeCurso
+                label: "Curso", value: Aluno[i].NomeCurso
             },
             {
-                label: "Turma:", value: Aluno[i].NomeTurma
+                label: "Turma", value: Aluno[i].NomeTurma
             },          
             
             );
