@@ -26,16 +26,39 @@ module.exports = {
         });
     },
 
-    dadosAlunos: (matricula) => {
-        return new Promise((aceito, rejeitado) => {
-            dbEscola.query('SELECT * FROM TbAluno WHERE NomeAluno = ?', [`%${matricula}%`], (error, result) => {
-                if (error) { rejeitado(error); return; }
-                if(result.length > [0]){
-                    aceito(result);
-                }else{
-                    aceito(false);
-                }
-            });
+    dadosAlunos: (matricula, nome) => {
+      return new Promise((aceito, rejeitado) => {
+        dbEscola.query(`SELECT 
+          TbAluno.NomeAluno,
+          TbAluno.telefone,
+          TbAluno.email,
+          TbAluno.matricula,
+          TbTurma.NomeTurma,
+          TbSerie.NomeSerie,
+          TbResponsavel.NomeR AS NomeResponsavel,
+          RP.NomeR AS NomePai,
+          RM.NomeR AS NomeMae  
+        FROM TbAluno
+        INNER JOIN TbAlunoTurma ON TbAlunoTurma.IdAluno = TbAluno.IdAluno
+        INNER JOIN TbTurma ON TbTurma.IdTurma = TbAlunoTurma.IdTurma
+        INNER JOIN TbSerie ON TbTurma.IdSerie = TbSerie.IdSerie
+        LEFT JOIN TbResponsavel ON TbResponsavel.IdResponsavel = TbAluno.IdResponsavel
+        LEFT JOIN TbResponsavel AS RP ON RP.IdResponsavel = TbAluno.IdPai AND RP.IdResponsavel = TbResponsavel.IdResponsavel
+        LEFT JOIN TbResponsavel AS RM ON RM.IdResponsavel = TbAluno.IdMae AND RM.IdResponsavel = TbResponsavel.IdResponsavel
+        WHERE TbAluno.NomeAluno = 'miguel'`,
+
+        // WHERE TbAluno.NomeAluno LIKE ? OR TbAluno.matricula = ?`
+        [`%${nome}%`, matricula], (error, result) => {
+          if (error) { 
+            rejeitado(error); 
+            return; 
+          }
+          if (result.length > 0){
+            aceito(result);
+          } else {
+            aceito(false);
+          }
         });
+      })
     }
 }

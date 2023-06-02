@@ -20,31 +20,43 @@ module.exports = {
         // });
 
         for(let i in Aluno){
-            json.result.push(
-            {
-                label: "Nome", value: Aluno[i].NomeAluno
+            json.result.push({
+                label: "Nome do aluno",
+                value: Aluno[i].NomeAluno
             },
             {
-                label: "Matricula", value: Aluno[i].Matricula
-            }, 
-            {
-                label: "Situação", value: Aluno[i].StAlunoTurma
+                label: "Telefone",
+                value: Aluno[i].telefone
             },
             {
-                label: "Período Letivo", value: Aluno[i].NomePeriodo
+                label: "Email",
+                value: Aluno[i].email
             },
             {
-                label: "Série", value: Aluno[i].NomeSerie
+                label: "Matrícula",
+                value: Aluno[i].matricula
             },
             {
-                label: "Curso", value: Aluno[i].NomeCurso
+                label: "Turma",
+                value: Aluno[i].NomeTurma
             },
             {
-                label: "Turma", value: Aluno[i].NomeTurma
-            },          
-            
-            );
-        }
+                label: "Série",
+                value: Aluno[i].NomeSerie
+            },
+            {
+                label: "Responsável",
+                value: Aluno[i].NomeResponsavel
+            },
+            {
+                label: "Pai",
+                value: Aluno[i].NomePai ? Aluno[i].NomePai : '-'
+            },
+            {
+                label: "Mãe",
+                value: Aluno[i].NomeMae ? Aluno[i].NomeMae : '-'
+            });
+        }        
         res.json(json);
     },
 
@@ -66,8 +78,43 @@ module.exports = {
         let matricula = req.params.matricula;        
         let Aluno = await BancoServices.dadosAlunos(matricula);
 
-        if(Aluno){
-            json.result = Aluno;
+        for(let i in Aluno){
+            json.result.push({
+                label: "Nome do aluno",
+                value: Aluno[i].NomeAluno
+            },
+            {
+                label: "Telefone",
+                value: Aluno[i].telefone
+            },
+            {
+                label: "Email",
+                value: Aluno[i].email ? Aluno[i].email : '-'
+            },
+            {
+                label: "Matrícula",
+                value: Aluno[i].matricula
+            },
+            {
+                label: "Turma",
+                value: Aluno[i].NomeTurma
+            },
+            {
+                label: "Série",
+                value: Aluno[i].NomeSerie
+            },
+            {
+                label: "Responsável",
+                value: Aluno[i].NomeResponsavel ? Aluno[i].NomeResponsavel : '-'
+            },
+            {
+                label: "Pai",
+                value: Aluno[i].NomePai ? Aluno[i].NomePai : '-'
+            },
+            {
+                label: "Mãe",
+                value: Aluno[i].NomeMae ? Aluno[i].NomeMae : '-'
+            });
         }
         res.json(json);
     }
