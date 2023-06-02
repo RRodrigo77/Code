@@ -218,5 +218,102 @@ INNER JOIN TbPeriodo ON TbPeriodo.IdPeriodo = TbTurma.IdPeriodo;
 SELECT * FROM VW_Aluno_Situacao WHERE idaluno = 23
 WHERE NomeTurma = 'Turma B';
 DESCRIBE VW_Aluno_Situacao
-select * from tbaluno where NomeAluno = "rodrigo"
+select * from tbaluno 
+where NomeAluno = "rodrigo" or Matricula = 'Matricula'
 
+select * from tbresponsavel
+
+# Usado o SHA1() para criptografia da senha no banco
+# Inserido coluna para senha na tbaluno
+ALTER TABLE TbAluno ADD senha VARCHAR(255);
+
+# Inserindo senha para um cadastro de aluno para futuros testes
+ALTER TABLE TbAluno ADD senha VARCHAR(255);
+UPDATE TbAluno SET senha = SHA1('123456') WHERE idAluno = 43;
+
+ALTER TABLE tbresponsavel ADD COLUMN senha VARCHAR(255) DEFAULT '123';
+
+ALTER TABLE tbaluno ALTER COLUMN senha SET DEFAULT '123';
+
+ALTER TABLE tbprofessor ADD COLUMN senha VARCHAR(255) DEFAULT '123';
+
+# Criação da tabela de usuários
+CREATE TABLE TbUsuario (
+  IdUsuario INT NOT NULL AUTO_INCREMENT,
+  NomeUsuario VARCHAR(100) NOT NULL,
+  NomeCargo VARCHAR(100),
+  senha VARCHAR(256) DEFAULT '123',
+  StAtivo BIT DEFAULT 1,
+  PRIMARY KEY (IdUsuario)
+);
+
+
+
+# TESTES DE CONSULTAS PARA DADOS DOS ALUNOS
+SELECT 
+    TbAluno.NomeAluno,
+    TbAluno.telefone,
+    TbAluno.email,
+    TbAluno.matricula,
+    TbTurma.NomeTurma,
+    TbSerie.NomeSerie,
+    TbResponsavel.NomeR AS NomeResponsavel,
+    R.NomeAluno AS NomePai,
+    M.NomeAluno AS NomeMae
+
+FROM 
+    TbAluno
+
+INNER JOIN 
+    TbAlunoTurma ON TbAlunoTurma.IdAluno = TbAluno.IdAluno
+INNER JOIN 
+    TbTurma ON TbTurma.IdTurma = TbAlunoTurma.IdTurma
+INNER JOIN 
+    TbSerie ON TbTurma.IdSerie = TbSerie.IdSerie
+LEFT JOIN 
+    TbResponsavel ON TbResponsavel.IdResponsavel = TbAluno.IdResponsavel
+LEFT JOIN 
+    TbAluno R ON R.IdAluno = TbAluno.IdPai AND R.IdResponsavel = TbAluno.IdResponsavel
+LEFT JOIN 
+    TbAluno M ON M.IdAluno = TbAluno.IdMae AND M.IdResponsavel = TbAluno.IdResponsavel;
+
+
+SELECT 
+    TbAluno.NomeAluno,
+    TbAluno.telefone,
+    TbAluno.email,
+    TbAluno.matricula,
+    TbTurma.NomeTurma,
+    TbSerie.NomeSerie,
+    TbResponsavel.NomeR AS NomeResponsavel,
+    RP.NomeR AS NomePai,
+    RM.NomeR AS NomeMae  
+FROM TbAluno
+INNER JOIN TbAlunoTurma ON TbAlunoTurma.IdAluno = TbAluno.IdAluno
+INNER JOIN TbTurma ON TbTurma.IdTurma = TbAlunoTurma.IdTurma
+INNER JOIN TbSerie ON TbTurma.IdSerie = TbSerie.IdSerie
+LEFT JOIN  TbResponsavel ON TbResponsavel.IdResponsavel = TbAluno.IdResponsavel
+LEFT JOIN  TbResponsavel AS RP ON RP.IdResponsavel = TbAluno.IdPai AND RP.IdResponsavel = TbResponsavel.IdResponsavel
+LEFT JOIN  TbResponsavel AS RM ON RM.IdResponsavel = TbAluno.IdMae AND RM.IdResponsavel = TbResponsavel.IdResponsavel
+WHERE TbAluno.NomeAluno LIKE 'miguel' OR TbAluno.matricula = 'matricula_do_aluno';
+
+
+
+SELECT 
+          TbAluno.NomeAluno,
+          TbAluno.telefone,
+          TbAluno.email,
+          TbAluno.matricula,
+          TbTurma.NomeTurma,
+          TbSerie.NomeSerie,
+          TbResponsavel.NomeR AS NomeResponsavel,
+          RP.NomeR AS NomePai,
+          RM.NomeR AS NomeMae  
+        FROM TbAluno
+        INNER JOIN TbAlunoTurma ON TbAlunoTurma.IdAluno = TbAluno.IdAluno
+        INNER JOIN TbTurma ON TbTurma.IdTurma = TbAlunoTurma.IdTurma
+        INNER JOIN TbSerie ON TbTurma.IdSerie = TbSerie.IdSerie
+        LEFT JOIN TbResponsavel ON TbResponsavel.IdResponsavel = TbAluno.IdResponsavel
+        LEFT JOIN TbResponsavel AS RP ON RP.IdResponsavel = TbAluno.IdPai AND RP.IdResponsavel = TbResponsavel.IdResponsavel
+        LEFT JOIN TbResponsavel AS RM ON RM.IdResponsavel = TbAluno.IdMae AND RM.IdResponsavel = TbResponsavel.IdResponsavel
+        WHERE TbAluno.NomeAluno = 'miguel'
