@@ -280,6 +280,8 @@ LEFT JOIN
 
 SELECT 
     TbAluno.NomeAluno,
+    TbAluno.cpf,
+    TbAluno.rg,
     TbAluno.telefone,
     TbAluno.email,
     TbAluno.matricula,
@@ -302,6 +304,8 @@ WHERE TbAluno.NomeAluno LIKE 'miguel' OR TbAluno.matricula = 'matricula_do_aluno
 SELECT 
           TbAluno.NomeAluno,
           TbAluno.telefone,
+          TbAluno.cpf,
+          TbAluno.rg,
           TbAluno.email,
           TbAluno.matricula,
           TbTurma.NomeTurma,
@@ -316,4 +320,3 @@ SELECT
         LEFT JOIN TbResponsavel ON TbResponsavel.IdResponsavel = TbAluno.IdResponsavel
         LEFT JOIN TbResponsavel AS RP ON RP.IdResponsavel = TbAluno.IdPai AND RP.IdResponsavel = TbResponsavel.IdResponsavel
         LEFT JOIN TbResponsavel AS RM ON RM.IdResponsavel = TbAluno.IdMae AND RM.IdResponsavel = TbResponsavel.IdResponsavel
-        WHERE TbAluno.NomeAluno = 'miguel'
