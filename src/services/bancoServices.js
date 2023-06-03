@@ -31,6 +31,8 @@ module.exports = {
         dbEscola.query(`SELECT 
           TbAluno.NomeAluno,
           TbAluno.telefone,
+          TbAluno.cpf,
+          TbAluno.rg,
           TbAluno.email,
           TbAluno.matricula,
           TbTurma.NomeTurma,

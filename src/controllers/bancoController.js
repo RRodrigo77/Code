@@ -84,6 +84,14 @@ module.exports = {
                 value: Aluno[i].NomeAluno
             },
             {
+                label: "CPF",
+                value: Aluno[i].cpf
+            },
+            {
+                label: "RG",
+                value: Aluno[i].rg
+            },
+            {
                 label: "Telefone",
                 value: Aluno[i].telefone
             },
