@@ -257,6 +257,7 @@ ALTER TABLE tbusuario ADD COLUMN RG VARCHAR(20) NOT NULL
 SELECT cpf, senha FROM TbUsuario WHERE senha = sha1("123456") and cpf = '10394343476'
 
 update tbusuario set senha = UNHEX(SHA2('mypassword', 256)) where idusuario = 1
+
 select * from tbusuario
 # TESTES DE CONSULTAS PARA DADOS DOS ALUNOS
 SELECT 
@@ -286,7 +287,6 @@ LEFT JOIN
 LEFT JOIN 
     TbAluno M ON M.IdAluno = TbAluno.IdMae AND M.IdResponsavel = TbAluno.IdResponsavel;
 
-
 SELECT 
     TbAluno.NomeAluno,
     TbAluno.cpf,
@@ -308,8 +308,6 @@ LEFT JOIN  TbResponsavel AS RP ON RP.IdResponsavel = TbAluno.IdPai AND RP.IdResp
 LEFT JOIN  TbResponsavel AS RM ON RM.IdResponsavel = TbAluno.IdMae AND RM.IdResponsavel = TbResponsavel.IdResponsavel
 WHERE TbAluno.NomeAluno LIKE 'miguel' OR TbAluno.matricula = 'matricula_do_aluno';
 
-
-
 SELECT 
           TbAluno.NomeAluno,
           TbAluno.telefone,
@@ -329,3 +327,24 @@ SELECT
         LEFT JOIN TbResponsavel ON TbResponsavel.IdResponsavel = TbAluno.IdResponsavel
         LEFT JOIN TbResponsavel AS RP ON RP.IdResponsavel = TbAluno.IdPai AND RP.IdResponsavel = TbResponsavel.IdResponsavel
         LEFT JOIN TbResponsavel AS RM ON RM.IdResponsavel = TbAluno.IdMae AND RM.IdResponsavel = TbResponsavel.IdResponsavel
+        
+SELECT 
+          TbAluno.NomeAluno,
+          TbAluno.telefone,
+          TbAluno.cpf,
+          TbAluno.rg,
+          TbAluno.email,
+          TbAluno.matricula,
+          TbTurma.NomeTurma,
+          TbSerie.NomeSerie,
+          TbResponsavel.NomeR AS NomeResponsavel,
+          RP.NomeR AS NomePai,
+          RM.NomeR AS NomeMae  
+        FROM TbAluno
+        INNER JOIN TbAlunoTurma ON TbAlunoTurma.IdAluno = TbAluno.IdAluno
+        INNER JOIN TbTurma ON TbTurma.IdTurma = TbAlunoTurma.IdTurma
+        INNER JOIN TbSerie ON TbTurma.IdSerie = TbSerie.IdSerie
+        LEFT JOIN TbResponsavel ON TbResponsavel.IdResponsavel = TbAluno.IdResponsavel
+        LEFT JOIN TbResponsavel AS RP ON RP.IdResponsavel = TbAluno.IdPai AND RP.IdResponsavel = TbResponsavel.IdResponsavel
+        LEFT JOIN TbResponsavel AS RM ON RM.IdResponsavel = TbAluno.IdMae AND RM.IdResponsavel = TbResponsavel.IdResponsavel
+        WHERE TbAluno.cpf = 11111111114
