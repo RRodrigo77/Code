@@ -61,17 +61,20 @@ module.exports = {
           }
         });
     })
+  },
+  alunoteste: (cpf) => {
+    return new Promise((aceito, rejeitado) => {
+      dbEscola.query("SELECT * FROM TbAluno WHERE cpf = ?", 
+      [cpf], (error, result) => {
+        if (error) { 
+          rejeitado(error); 
+          return; }
+        if (result.length > 0) {
+          aceito(result);
+        } else {
+          aceito(false);
+        }
+      });
+    });
   }
-  // loginAluno: (cpf, senha) => {
-  //   return new Promise((aceito, rejeitado) => {
-  //     dbEscola.query("SELECT * FROM TbAluno WHERE cpf = ?", [`%${cpf}%`], (error, result) => {
-  //       if (error) { rejeitado(error); return; }
-  //       if (result.length > [0]) {
-  //         aceito(result);
-  //       } else {
-  //         aceito(false);
-  //       }
-  //     });
-  //   });
-  // }
 }

@@ -115,16 +115,27 @@ module.exports = {
         }
         res.json(json);
     },
-    loginAluno: async(req, res)=>{     
+    // loginAluno: async(req, res)=>{     
 
-        const cpf = req.body.cpf;
-        const senha  =req.body.senha;        
-        let Aluno = await bancoServices.loginAluno(cpf,senha);
+    //     const cpf = req.body.cpf;
+    //     const senha  =req.body.senha;        
+    //     let Aluno = await bancoServices.loginAluno(cpf,senha);
+
+    //     if(Aluno){
+    //         res.send(senha);
+    //         console.log(cpf,senha);
+    //     }
+    //     res.send(senha);
+    // } 
+    alunoteste: async(req, res)=>{     
+        let json = {error:'', result:[]};
+
+        let cpf = req.params.cpf;      
+        let Aluno = await bancoServices.alunoteste(cpf);
 
         if(Aluno){
-            res.send(senha);
-            console.log(cpf,senha);
+            json.result = Aluno;
         }
-        res.send(senha);
+        res.json(json);
     } 
 }

@@ -13,13 +13,28 @@ router.post('/loginAluno', async (req, res) => {
   const { cpf, senha } = req.body;
 
   try {
-    const result = await dbEscola.query("SELECT * FROM TbAluno WHERE cpf = ?", [cpf]);
-    if (result.length > 0 && result[0].senha === senha) {
-      res.send({ msg: "Usuário logado com sucesso" });
-      console.log(cpf, senha);
-    } else {
-      return res.status(401).send({ msg: "Credenciais inválidas" });
-    }
+    dbEscola.query("SELECT * FROM TbAluno WHERE cpf = ?",
+      [cpf], (error, result) => {
+        if (error) {
+          console.log(error);
+          res.send(result);
+          return;
+        }
+        if (result.length > 0) {
+          res.send({ msg: "Usuário logado com sucesso" });
+        } else {
+          res.send({ msg: "Credenciais inválidas" });
+        }
+      });
+
+    // const result = await dbEscola.query("SELECT * FROM TbAluno WHERE cpf = ?", [cpf]);
+    // if (result.length > 0) {
+    //   res.send({ msg: cpf });
+    //   console.log(cpf, senha);
+    // } else {
+    //   res.send({ msg: cpf });
+    //   // return res.status(401).send({ msg: "Credenciais inválidas" });
+    // }
   } catch (error) {
     return res.status(500).send({ msg: "Erro interno do servidor" });
   }

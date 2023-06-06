@@ -1,3 +1,5 @@
+// Testa para login
+
 const crypto = require('crypto');
 const dbEscola = require('../dbEscola');
 
