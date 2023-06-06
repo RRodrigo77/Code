@@ -7,7 +7,7 @@ const bancoController = require('./controllers/bancoController');
 
 router.get('/alunos', bancoController.buscarAlunos); // Retorna todos os alunos
 router.get('/aluno/:nome', bancoController.buscarAlunoPorNome); // Retorna um Aluno com parâmetro "nome"
-router.get('/alunodados', bancoController.dadosAlunos);
+router.get('/alunodados/:cpf', bancoController.dadosAlunos);
 //tentativa de login
 router.post('/loginAluno', async (req, res) => {
   const { cpf, senha } = req.body;

@@ -26,7 +26,7 @@ module.exports = {
     });
   },
 
-  dadosAlunos: (nome, matricula) => {
+  dadosAlunos: (cpf) => {
     return new Promise((aceito, rejeitado) => {
       dbEscola.query(`SELECT 
           TbAluno.NomeAluno,
@@ -47,10 +47,9 @@ module.exports = {
         LEFT JOIN TbResponsavel ON TbResponsavel.IdResponsavel = TbAluno.IdResponsavel
         LEFT JOIN TbResponsavel AS RP ON RP.IdResponsavel = TbAluno.IdPai AND RP.IdResponsavel = TbResponsavel.IdResponsavel
         LEFT JOIN TbResponsavel AS RM ON RM.IdResponsavel = TbAluno.IdMae AND RM.IdResponsavel = TbResponsavel.IdResponsavel
-        WHERE TbAluno.NomeAluno = 'miguel'`,
-
-        // WHERE TbAluno.NomeAluno LIKE ? OR TbAluno.matricula = ?`
-        [`%${nome}%`, matricula], (error, result) => {
+        WHERE TbAluno.cpf = ?`,        
+        // [`%${nome}%`], (error, result) => {
+        [cpf], (error, result) => {
           if (error) {
             rejeitado(error);
             return;

@@ -53,20 +53,19 @@ module.exports = {
         let json = {error:'', result:[]};
 
         let nome = req.params.nome;        
-        let Aluno = await BancoServices.buscarAlunoPorNome(nome);
+        let Aluno = await bancoServices.buscarAlunoPorNome(nome);
 
         if(Aluno){
             json.result = Aluno;
         }
         res.json(json);
     },
-    // ajustar dados alunos para receber parametro para quando
-    // DadosPessoais for acessada retornar os dados
+    
     dadosAlunos: async(req, res)=>{
         let json = {error:'', result:[]};
 
-        let matricula = req.params.matricula;
-        let Aluno = await bancoServices.dadosAlunos(matricula);
+        let cpf = req.params.cpf;
+        let Aluno = await bancoServices.dadosAlunos(cpf); // Recebe CPF por parâmetro
 
         for(let i in Aluno){
             json.result.push({
