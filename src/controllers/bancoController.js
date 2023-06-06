@@ -1,4 +1,4 @@
-const BancoServices = require('../services/bancoServices');
+const bancoServices = require('../services/bancoServices');
 
 //Implementação do retorno json
 
@@ -7,17 +7,6 @@ module.exports = {
         let json = {error:'', result:[]};
 
         let Aluno = await BancoServices.buscarAlunos();
-
-        // json.result.push({
-        //     NomePeriodo: Aluno[i].NomePeriodo,    
-        //     NomeSerie: Aluno[i].NomeSerie,
-        //     NomeCurso: Aluno[i].NomeCurso,
-        //     NomeTurma:Aluno[i].NomeTurma,
-        //     SiglaTurma: Aluno[i].SiglaTurma,
-        //     Matricula: Aluno[i].Matricula,
-        //     NomeAluno: Aluno[i].NomeAluno,
-        //     StAlunoTurma: Aluno[i].StAlunoTurma
-        // });
 
         for(let i in Aluno){
             json.result.push({
@@ -71,12 +60,13 @@ module.exports = {
         }
         res.json(json);
     },
-
+    // ajustar dados alunos para receber parametro para quando
+    // DadosPessoais for acessada retornar os dados
     dadosAlunos: async(req, res)=>{
         let json = {error:'', result:[]};
 
-        let matricula = req.params.matricula;        
-        let Aluno = await BancoServices.dadosAlunos(matricula);
+        let matricula = req.params.matricula;
+        let Aluno = await bancoServices.dadosAlunos(matricula);
 
         for(let i in Aluno){
             json.result.push({
@@ -125,5 +115,17 @@ module.exports = {
             });
         }
         res.json(json);
-    }
+    },
+    loginAluno: async(req, res)=>{     
+
+        const cpf = req.body.cpf;
+        const senha  =req.body.senha;        
+        let Aluno = await bancoServices.loginAluno(cpf,senha);
+
+        if(Aluno){
+            res.send(senha);
+            console.log(cpf,senha);
+        }
+        res.send(senha);
+    } 
 }

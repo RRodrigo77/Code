@@ -3,32 +3,32 @@ const dbEscola = require('../dbEscola');
 
 module.exports = {
 
-    buscarAlunos: () => {
-        return new Promise((aceito, rejeitado) => {
+  buscarAlunos: () => {
+    return new Promise((aceito, rejeitado) => {
 
-            dbEscola.query("SELECT * FROM VW_Aluno_Situacao WHERE NomeAluno = 'miguel'", (error, result) => {
-                if (error) { rejeitado(error); return; }
-                aceito(result);
-            });
-        });
-    },
+      dbEscola.query("SELECT * FROM VW_Aluno_Situacao WHERE NomeAluno = 'miguel'", (error, result) => {
+        if (error) { rejeitado(error); return; }
+        aceito(result);
+      });
+    });
+  },
 
-    buscarAlunoPorNome: (nome) => {
-        return new Promise((aceito, rejeitado) => {
-            dbEscola.query('SELECT * FROM TbAluno WHERE nomeAluno LIKE ?  ORDER BY NomeAluno', [`%${nome}%`], (error, result) => {
-                if (error) { rejeitado(error); return; }
-                if(result.length > [0]){
-                    aceito(result);
-                }else{
-                    aceito(false);
-                }
-            });
-        });
-    },
+  buscarAlunoPorNome: (nome) => {
+    return new Promise((aceito, rejeitado) => {
+      dbEscola.query('SELECT * FROM TbAluno WHERE nomeAluno LIKE ?  ORDER BY NomeAluno', [`%${nome}%`], (error, result) => {
+        if (error) { rejeitado(error); return; }
+        if (result.length > [0]) {
+          aceito(result);
+        } else {
+          aceito(false);
+        }
+      });
+    });
+  },
 
-    dadosAlunos: (matricula, nome) => {
-      return new Promise((aceito, rejeitado) => {
-        dbEscola.query(`SELECT 
+  dadosAlunos: (nome, matricula) => {
+    return new Promise((aceito, rejeitado) => {
+      dbEscola.query(`SELECT 
           TbAluno.NomeAluno,
           TbAluno.telefone,
           TbAluno.cpf,
@@ -51,16 +51,28 @@ module.exports = {
 
         // WHERE TbAluno.NomeAluno LIKE ? OR TbAluno.matricula = ?`
         [`%${nome}%`, matricula], (error, result) => {
-          if (error) { 
-            rejeitado(error); 
-            return; 
+          if (error) {
+            rejeitado(error);
+            return;
           }
-          if (result.length > 0){
+          if (result.length > 0) {
             aceito(result);
           } else {
             aceito(false);
           }
         });
-      })
-    }
+    })
+  }
+  // loginAluno: (cpf, senha) => {
+  //   return new Promise((aceito, rejeitado) => {
+  //     dbEscola.query("SELECT * FROM TbAluno WHERE cpf = ?", [`%${cpf}%`], (error, result) => {
+  //       if (error) { rejeitado(error); return; }
+  //       if (result.length > [0]) {
+  //         aceito(result);
+  //       } else {
+  //         aceito(false);
+  //       }
+  //     });
+  //   });
+  // }
 }

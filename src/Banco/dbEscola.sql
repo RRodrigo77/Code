@@ -247,8 +247,17 @@ CREATE TABLE TbUsuario (
   PRIMARY KEY (IdUsuario)
 );
 
+SELECT cpf, senha FROM TbUsuario
+ALTER TABLE tbusuario
+DROP COLUMN cpf;
+update tbusuario set rg = '002513202' where idusuario = 1
+ALTER TABLE tbusuario ADD COLUMN cpf VARCHAR(11) NOT NULL
+ALTER TABLE tbusuario ADD COLUMN RG VARCHAR(20) NOT NULL
 
+SELECT cpf, senha FROM TbUsuario WHERE senha = sha1("123456") and cpf = '10394343476'
 
+update tbusuario set senha = UNHEX(SHA2('mypassword', 256)) where idusuario = 1
+select * from tbusuario
 # TESTES DE CONSULTAS PARA DADOS DOS ALUNOS
 SELECT 
     TbAluno.NomeAluno,

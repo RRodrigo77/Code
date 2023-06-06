@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Teste de login</title>
+  </head>
+  <body>
+    <h1>Teste de login</h1>
+    <form id="formulario" method="post">
+      <label for="cpf">CPF:</label>
+      <input type="text" id="cpf" name="cpf"><br>
+
+      <label for="senha">Senha:</label>
+      <input type="password" id="senha" name="senha"><br>
+
+      <input type="submit" value="Login">
+    </form>
+
+    <!-- Espaço reservado para mostrar as informações de retorno -->
+    <div id="retorno"></div>
+
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script>
+      // Seleciona o formulário e adiciona um evento quando ele é enviado
+      const formulario = document.getElementById('formulario');
+      formulario.addEventListener('submit', async (event) => {
+        event.preventDefault(); // Previne o envio padrão do formulário
+        
+        // Coleta os dados dos campos do formulário
+        const cpf = document.getElementById('cpf').value;
+        const senha = document.getElementById('senha').value;
+
+        // Faz a solicitação HTTP POST usando axios
+        axios.post('http://localhost:3000/api/loginaluno', {
+          cpf: cpf,
+          senha: senha
+        }, {
+          headers: {
+            'Content-Type': 'application/json'
+          }
+        })
+        .then(response => {
+          // Extrai as informações da resposta como JSON
+          const data = response.data;
+
+          // Atualiza o conteúdo do elemento div com as informações retornadas pela API
+          const retorno = document.getElementById('retorno');
+          retorno.innerHTML = `<p>Nome: ${data.nome}</p><p>Email: ${data.email}</p><p>Telefone: ${data.telefone}</p>`;
+        })
+        .catch(error => {
+          // Lida com o erro de forma adequada
+          console.error(`Erro ao chamar a API: ${error}`);
+        });
+      });
+    </script>
+  </body>
+</html>
