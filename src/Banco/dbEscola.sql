@@ -259,6 +259,7 @@ SELECT cpf, senha FROM TbUsuario WHERE senha = sha1("123456") and cpf = '1039434
 update tbusuario set senha = UNHEX(SHA2('mypassword', 256)) where idusuario = 1
 
 select * from tbusuario
+
 # TESTES DE CONSULTAS PARA DADOS DOS ALUNOS
 SELECT 
     TbAluno.NomeAluno,
@@ -372,14 +373,26 @@ CREATE TABLE tbdiario (
   IdProfessor INT,
   IdDisciplina INT,
   IdTurma INT,
+  FOREIGN KEY (IdProfessor) REFERENCES tbprofessor(Idprofessor),
+  FOREIGN KEY (IdDisciplina) REFERENCES tbdisciplina(IdDisciplina),
+  FOREIGN KEY (IdTurma) REFERENCES tbturma(IdTurma)
+);
+ # Criação da tabela para registro de aula
+CREATE TABLE tbregistrodiario (
+  Idregistro INT PRIMARY KEY AUTO_INCREMENT,
+  IdDiario INT,
+  IdDisciplina INT,
+  IdProfessor INT,
+  IdTurma INT,
   conteudo TEXT,
   data DATE,
-  FOREIGN KEY (IdDrofessor) REFERENCES tbprofessor(IdDrofessor),
+  FOREIGN KEY (IdDiario) REFERENCES tbdiario(IdDiario),
+  FOREIGN KEY (IdProfessor) REFERENCES tbprofessor(IdProfessor),
   FOREIGN KEY (IdDisciplina) REFERENCES tbdisciplina(IdDisciplina),
   FOREIGN KEY (IdTurma) REFERENCES tbturma(IdTurma)
 );
 
-# concluir tbdiario acima e testar
+alter table tbregistrodiario
 
 # Ajuste na senha
 ALTER TABLE tbaluno MODIFY senha VARCHAR(256);
@@ -392,11 +405,54 @@ ALTER TABLE Tbprofessor ADD COLUMN sexo CHAR(1) NOT NULL;
 ALTER TABLE tbresponsavel ADD COLUMN sexo CHAR(1) NOT NULL;
 ALTER TABLE tbusuario ADD COLUMN sexo CHAR(1) NOT NULL;
 
-select * from tbprofessor
-select nomealuno, cpf, senha from tbaluno where nomealuno = 'rodrigo'
+select * from tbresponsavel
 
-update tbusuario set senha = sha2('123',256) where idusuario = 23;
+SELECT 
+    NomeR,
+    data_nascimento,
+    email,
+    CPF,
+    RG,
+    IdEndereco,
+    telefone,
+    telefone_2,
+    senha,
+    case sexo 
+		WHEN 'M' THEN 'Masculino'
+        WHEN 'F' THEN 'Feminino'
+        WHEN 'O' THEN 'Outro' END AS sexo
+FROM tbresponsavel;
+
+SELECT 
+          TbAluno.NomeAluno,
+          TbAluno.telefone,
+          TbAluno.cpf,
+          TbAluno.rg,
+          DATE_FORMAT(TbAluno.data_nascimento, '%d/%m/%Y') AS data_nascimento_formatada,
+          TbAluno.email,
+          TbAluno.matricula,
+          TbTurma.NomeTurma,          
+          TbSerie.NomeSerie,
+          TbResponsavel.NomeR AS NomeResponsavel,
+          RP.NomeR AS NomePai,
+          RM.NomeR AS NomeMae  
+        FROM TbAluno
+        INNER JOIN TbAlunoTurma ON TbAlunoTurma.IdAluno = TbAluno.IdAluno
+        INNER JOIN TbTurma ON TbTurma.IdTurma = TbAlunoTurma.IdTurma
+        INNER JOIN TbSerie ON TbTurma.IdSerie = TbSerie.IdSerie
+        LEFT JOIN TbResponsavel ON TbResponsavel.IdResponsavel = TbAluno.IdResponsavel
+        LEFT JOIN TbResponsavel AS RP ON RP.IdResponsavel = TbAluno.IdPai AND RP.IdResponsavel = TbResponsavel.IdResponsavel
+        LEFT JOIN TbResponsavel AS RM ON RM.IdResponsavel = TbAluno.IdMae AND RM.IdResponsavel = TbResponsavel.IdResponsavel
+        WHERE TbAluno.cpf = '10394343476';
 
 select * from tbaluno
 
-update tbaluno set email = 'miguel@gmail.com' where idaluno = 23
+INSERT INTO tbaluno
+(nomeAluno,
+data_nascimento,
+CPF,
+RG,
+sexo,telefone)
+VALUES
+('teste','1995-01-11','11111111111','002513202','M','(84)999999999');
+

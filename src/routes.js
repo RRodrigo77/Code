@@ -8,9 +8,10 @@ const bancoController = require('./controllers/bancoController');
 router.get('/alunos', bancoController.buscarAlunos); // Retorna todos os alunos
 router.get('/aluno/:nome', bancoController.buscarAlunoPorNome); // Retorna um Aluno com parâmetro "nome"
 router.get('/alunodados/:cpf', bancoController.dadosAlunos); // Monstra os dados dos alunos
+router.get('/dadosresp/:cpf', bancoController.dadosResponsavel);
 
 router.post('/login', bancoController.login); // Realiza a validação de cpf e senha para o login
-
+router.post('/UPDATEaluno', bancoController.UPDADEaluno);
 
 
 
