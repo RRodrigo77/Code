@@ -54,7 +54,7 @@ module.exports = {
             rejeitado(error);
             return;
           }
-          if (result.length > 0) {
+          if (result.length > [0]) {
             aceito(result);
           } else {
             aceito(false);
@@ -62,19 +62,28 @@ module.exports = {
         });
     })
   },
-  alunoteste: (cpf) => {
+  login: (cpf,userType) => {
     return new Promise((aceito, rejeitado) => {
-      dbEscola.query("SELECT * FROM TbAluno WHERE cpf = ?", 
+
+      const userTypeMap = {
+        'professor': "tbProfessor",
+        'aluno': "TbAluno",
+        'responsavel': "tbresponsavel",
+        'usuario': "TbUsuario"
+      };            
+      const userTypeValue = userTypeMap[userType];
+
+      dbEscola.query(`SELECT cpf, senha FROM ${userTypeValue} WHERE cpf = ?`, 
       [cpf], (error, result) => {
         if (error) { 
           rejeitado(error); 
           return; }
-        if (result.length > 0) {
+        if (result.length > [0]) {
           aceito(result);
         } else {
           aceito(false);
         }
-      });
+      });      
     });
   }
 }

@@ -11,9 +11,12 @@ const routes = require('./routes'); //chamada ao servidor
 const server = express();
 server.use(cors());
 server.use(bodyParser.urlencoded({extended: false}));
+server.use(bodyParser.json());
 server.use('/api',routes);
 
 // Direcionando a porta definida em "variaveis.env"
-server.listen(process.env.PORT,()=>{
-    console.log('Servidor rodando em: localhost:',process.env.PORT);
-})
+server.listen(process.env.PORT, () => {
+  console.log(`Server listening on port ${process.env.PORT}`);
+}).on('error', err => {
+  console.error(err);
+});

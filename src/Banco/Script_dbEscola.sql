@@ -38,7 +38,7 @@ CREATE TABLE `tbaluno` (
   `telefone` varchar(15) NOT NULL,
   `matricula` int DEFAULT NULL,
   `sexo` char(1) NOT NULL,
-  `senha` varchar(255) DEFAULT '123',
+  `senha` varchar(256) DEFAULT NULL,
   PRIMARY KEY (`IdAluno`),
   KEY `FK_Aluno_Responsavel` (`IdResponsavel`),
   KEY `FK_Aluno_Pai` (`IdPai`),
@@ -57,7 +57,7 @@ CREATE TABLE `tbaluno` (
 
 LOCK TABLES `tbaluno` WRITE;
 /*!40000 ALTER TABLE `tbaluno` DISABLE KEYS */;
-INSERT INTO `tbaluno` VALUES (22,'henrique','1995-03-11',NULL,NULL,NULL,NULL,'11111111111','002513202',NULL,'(84) 999434387',20230002,'M','123'),(23,'Miguel','1995-03-11',NULL,NULL,NULL,NULL,'341242144','002513202',NULL,'(84) 999434387',20220003,'M',NULL),(43,'Rodrigo','1995-03-11',NULL,NULL,NULL,NULL,'10394343476','002513202',NULL,'(84) 999434387',20230004,'M','7c4a8d09ca3762af61e59520943dc26494f8941b');
+INSERT INTO `tbaluno` VALUES (22,'henrique','1995-03-11',NULL,NULL,NULL,NULL,'11111111111','002513202',NULL,'(84) 999434387',20230002,'M','a665a45920422f9d417e4867efdc4fb8a04a1f3fff1fa07e998e86f7f7a27ae3'),(23,'Miguel','1995-03-11',NULL,NULL,NULL,'miguel@gmail.com','341242144','002513202',NULL,'(84) 999434387',20220003,'M','a665a45920422f9d417e4867efdc4fb8a04a1f3fff1fa07e998e86f7f7a27ae3'),(43,'Rodrigo','1995-03-11',NULL,NULL,NULL,'rodrigo@gmail.com','10394343476','002513202',NULL,'(84) 999434387',20230004,'M','7795ef546202c111f3b6ba9d74fe2becb1a88e39244eb040f4f09405b180cefc');
 /*!40000 ALTER TABLE `tbaluno` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -334,7 +334,8 @@ CREATE TABLE `tbprofessor` (
   `telefone` varchar(15) DEFAULT NULL,
   `IdEndereco` int NOT NULL,
   `StAtivo` bit(1) NOT NULL,
-  `senha` varchar(255) DEFAULT '123',
+  `senha` varchar(256) DEFAULT NULL,
+  `sexo` char(1) NOT NULL,
   PRIMARY KEY (`IdProfessor`),
   KEY `FK_Professor_Endereco` (`IdEndereco`),
   CONSTRAINT `FK_Professor_Endereco` FOREIGN KEY (`IdEndereco`) REFERENCES `tbendereco` (`IdEndereco`)
@@ -367,7 +368,8 @@ CREATE TABLE `tbresponsavel` (
   `IdEndereco` int NOT NULL,
   `telefone` varchar(15) NOT NULL,
   `telefone_2` varchar(15) NOT NULL,
-  `senha` varchar(255) DEFAULT '123',
+  `senha` varchar(256) DEFAULT NULL,
+  `sexo` char(1) NOT NULL,
   PRIMARY KEY (`IdResponsavel`),
   KEY `FK_Responsavel_Endereco` (`IdEndereco`),
   CONSTRAINT `FK_Responsavel_Endereco` FOREIGN KEY (`IdEndereco`) REFERENCES `tbendereco` (`IdEndereco`)
@@ -455,10 +457,11 @@ CREATE TABLE `tbusuario` (
   `IdUsuario` int NOT NULL AUTO_INCREMENT,
   `NomeUsuario` varchar(100) NOT NULL,
   `NomeCargo` varchar(100) DEFAULT NULL,
-  `senha` varchar(256) DEFAULT '123',
+  `senha` varchar(256) DEFAULT NULL,
   `StAtivo` bit(1) DEFAULT b'1',
   `cpf` varchar(11) NOT NULL,
   `RG` varchar(20) NOT NULL,
+  `sexo` char(1) NOT NULL,
   PRIMARY KEY (`IdUsuario`)
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -469,7 +472,7 @@ CREATE TABLE `tbusuario` (
 
 LOCK TABLES `tbusuario` WRITE;
 /*!40000 ALTER TABLE `tbusuario` DISABLE KEYS */;
-INSERT INTO `tbusuario` VALUES (1,'Rodrigo Rodrigues','Diretor','7c4a8d09ca3762af61e59520943dc26494f8941b',_binary '','10394343476','002513202');
+INSERT INTO `tbusuario` VALUES (1,'Rodrigo Rodrigues','Diretor','a665a45920422f9d417e4867efdc4fb8a04a1f3fff1fa07e998e86f7f7a27ae3',_binary '','10394343476','002513202','');
 /*!40000 ALTER TABLE `tbusuario` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -519,4 +522,4 @@ SET character_set_client = @saved_cs_client;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2023-06-06 10:45:56
+-- Dump completed on 2023-06-09  0:25:31

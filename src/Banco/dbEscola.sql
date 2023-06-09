@@ -347,4 +347,56 @@ SELECT
         LEFT JOIN TbResponsavel ON TbResponsavel.IdResponsavel = TbAluno.IdResponsavel
         LEFT JOIN TbResponsavel AS RP ON RP.IdResponsavel = TbAluno.IdPai AND RP.IdResponsavel = TbResponsavel.IdResponsavel
         LEFT JOIN TbResponsavel AS RM ON RM.IdResponsavel = TbAluno.IdMae AND RM.IdResponsavel = TbResponsavel.IdResponsavel
-        WHERE TbAluno.cpf = 11111111114
+        WHERE TbAluno.nomealuno = 'miguel'
+        
+select * from tbaluno
+SELECT * FROM TbAluno WHERE nomealuno = 'miguel'
+
+SELECT * FROM TbAluno WHERE cpf = "10394343476"
+
+update tbaluno set senha = '123' where idaluno = 23
+
+select * from vw_aluno_situacao where nometurma = 'turma B'
+
+select * from tbgrade
+
+
+SELECT nomeAluno, email, CPF, RG, telefone, sexo, data_nascimento
+FROM tbaluno where nomealuno = 'rodrigo';
+
+
+# Criação da TbDiario
+CREATE TABLE tbdiario (
+  IdDiario INT PRIMARY KEY AUTO_INCREMENT,
+  nomeDiario VARCHAR(100),
+  IdProfessor INT,
+  IdDisciplina INT,
+  IdTurma INT,
+  conteudo TEXT,
+  data DATE,
+  FOREIGN KEY (IdDrofessor) REFERENCES tbprofessor(IdDrofessor),
+  FOREIGN KEY (IdDisciplina) REFERENCES tbdisciplina(IdDisciplina),
+  FOREIGN KEY (IdTurma) REFERENCES tbturma(IdTurma)
+);
+
+# concluir tbdiario acima e testar
+
+# Ajuste na senha
+ALTER TABLE tbaluno MODIFY senha VARCHAR(256);
+ALTER TABLE tbresponsavel MODIFY senha VARCHAR(256);
+ALTER TABLE tbprofessor MODIFY senha VARCHAR(256);
+ALTER TABLE tbusuario MODIFY senha VARCHAR(256);
+
+# Inserido sexo na demais tabelas
+ALTER TABLE Tbprofessor ADD COLUMN sexo CHAR(1) NOT NULL;
+ALTER TABLE tbresponsavel ADD COLUMN sexo CHAR(1) NOT NULL;
+ALTER TABLE tbusuario ADD COLUMN sexo CHAR(1) NOT NULL;
+
+select * from tbprofessor
+select nomealuno, cpf, senha from tbaluno where nomealuno = 'rodrigo'
+
+update tbusuario set senha = sha2('123',256) where idusuario = 23;
+
+select * from tbaluno
+
+update tbaluno set email = 'miguel@gmail.com' where idaluno = 23

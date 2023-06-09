@@ -1,12 +1,13 @@
 const bancoServices = require('../services/bancoServices');
+const crypto = require('crypto');
 
-//Implementação do retorno json
+//Controlador
 
 module.exports = {
     buscarAlunos: async(req, res)=>{
         let json = {error:'', result:[]};
 
-        let Aluno = await BancoServices.buscarAlunos();
+        let Aluno = await bancoServices.buscarAlunos();
 
         for(let i in Aluno){
             json.result.push({
@@ -115,27 +116,28 @@ module.exports = {
         }
         res.json(json);
     },
-    // loginAluno: async(req, res)=>{     
+    login: async(req, res)=>{     
+        const cpf = req.body.cpf;
+        const senha = req.body.senha;
+        const userType = req.body.userType;
 
-    //     const cpf = req.body.cpf;
-    //     const senha  =req.body.senha;        
-    //     let Aluno = await bancoServices.loginAluno(cpf,senha);
+        const senhaHash = crypto.createHash('sha256').update(senha).digest('hex');    
+        
+        const result = await bancoServices.login(cpf,userType);
 
-    //     if(Aluno){
-    //         res.send(senha);
-    //         console.log(cpf,senha);
-    //     }
-    //     res.send(senha);
-    // } 
-    alunoteste: async(req, res)=>{     
-        let json = {error:'', result:[]};
-
-        let cpf = req.params.cpf;      
-        let Aluno = await bancoServices.alunoteste(cpf);
-
-        if(Aluno){
-            json.result = Aluno;
-        }
-        res.json(json);
+        if (result.length > 0) {
+            if(result[0].senha === senhaHash){
+              res.send({ msg: "Usuário logado com sucesso" });
+            //   console.log("cpf informado:        " + cpf);
+            //   console.log("cpf salvo no banco:   " + cpf);
+            //   console.log("senha informada:      " + senha);
+            //   console.log("senha salva no banco: " + senhaHash);
+            }else{
+              res.send({ msg: "Senha incorreta" });
+            } 
+          } else {
+            res.send({ msg: "Credenciais inválidas" });
+            // console.log("senha informada:      " + senha);
+          }      
     } 
 }
