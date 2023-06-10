@@ -13,6 +13,7 @@ router.get('/dadosresp/:cpf', bancoController.dadosResponsavel);
 router.post('/login', bancoController.login); // Realiza a validação de cpf e senha para o login
 router.post('/UPDATEaluno', bancoController.updateAluno);
 router.post('/insertaluno', bancoController.insertAluno);
+router.post('/insertResp', bancoController.insertResp);
 
 
 

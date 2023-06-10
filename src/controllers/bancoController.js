@@ -4,166 +4,189 @@ const crypto = require('crypto');
 //Controlador
 
 module.exports = {
-    buscarAlunos: async(res) => {
-        let json = {error:'', result:[]};
-
+    buscarAlunos: async (res) => {
+      try {
+        let json = { error: '', result: [] };
         let Aluno = await bancoServices.buscarAlunos();
-
-        for(let i in Aluno){
-            json.result.push({
-                label: "Nome do aluno",
-                value: Aluno[i].NomeAluno
-            },
-            {
-                label: "Telefone",
-                value: Aluno[i].telefone
-            },
-            {
-                label: "Email",
-                value: Aluno[i].email
-            },
-            {
-                label: "Matrícula",
-                value: Aluno[i].matricula
-            },
-            {
-                label: "Turma",
-                value: Aluno[i].NomeTurma
-            },
-            {
-                label: "Série",
-                value: Aluno[i].NomeSerie
-            },
-            {
-                label: "Responsável",
-                value: Aluno[i].NomeResponsavel
-            },
-            {
-                label: "Pai",
-                value: Aluno[i].NomePai ? Aluno[i].NomePai : '-'
-            },
-            {
-                label: "Mãe",
-                value: Aluno[i].NomeMae ? Aluno[i].NomeMae : '-'
-            });
-        }        
+    
+        for (let i in Aluno) {
+          json.result.push({
+            label: "Nome do aluno",
+            value: Aluno[i].NomeAluno
+          },
+          {
+            label: "Telefone",
+            value: Aluno[i].telefone
+          },
+          {
+            label: "Email",
+            value: Aluno[i].email
+          },
+          {
+            label: "Matrícula",
+            value: Aluno[i].matricula
+          },
+          {
+            label: "Turma",
+            value: Aluno[i].NomeTurma
+          },
+          {
+            label: "Série",
+            value: Aluno[i].NomeSerie
+          },
+          {
+            label: "Responsável",
+            value: Aluno[i].NomeResponsavel
+          },
+          {
+            label: "Pai",
+            value: Aluno[i].NomePai ? Aluno[i].NomePai : '-'
+          },
+          {
+            label: "Mãe",
+            value: Aluno[i].NomeMae ? Aluno[i].NomeMae : '-'
+          });
+        }
+    
         res.json(json);
+      } catch (error) {
+        console.error(error);
+        res.status(500).send({ msg: "Ocorreu um erro ao buscar todos os alunos" });
+      }
     },
 
-    buscarAlunoPorNome: async(req, res) =>{ 
-        let json = {error:'', result:[]};
-
-        let nome = req.params.nome;        
+    buscarAlunoPorNome: async (req, res) => {
+      try {
+        let json = { error: '', result: [] };
+        let nome = req.params.nome;
         let Aluno = await bancoServices.buscarAlunoPorNome(nome);
-
-        if(Aluno){
-            json.result = Aluno;
+    
+        if (Aluno) {
+          json.result = Aluno;
         }
+    
         res.json(json);
+      } catch (error) {
+        console.error(error);
+        res.status(500).send({ msg: "Ocorreu um erro ao buscar o aluno por nome" });
+      }
     },
     
-    dadosAlunos: async(req, res) => {
-        let json = {error:'', result:[]};
-
+    dadosAlunos: async (req, res) => {
+      try {
+        let json = { error: '', result: [] };
         let cpf = req.params.cpf;
-        let Aluno = await bancoServices.dadosAlunos(cpf); // Recebe CPF por parâmetro
-
-        for(let i in Aluno){
-            json.result.push(
-            {
-                label: "Nome do aluno",
-                value: Aluno[i].NomeAluno
-            },
-            {
-                label: "CPF",
-                value: Aluno[i].cpf
-            },
-            {
-                label: "RG",
-                value: Aluno[i].rg
-            },
-            {
-                label: "Data de nascimento",
-                value: Aluno[i].data_nascimento
-            },
-            {
-                label: "Telefone",
-                value: Aluno[i].telefone
-            },
-            {
-                label: "Email",
-                value: Aluno[i].email ? Aluno[i].email : '-'
-            },
-            {
-                label: "Matrícula",
-                value: Aluno[i].matricula
-            },
-            {
-                label: "Turma",
-                value: Aluno[i].NomeTurma
-            },
-            {
-                label: "Série",
-                value: Aluno[i].NomeSerie
-            },
-            {
-                label: "Responsável",
-                value: Aluno[i].NomeResponsavel ? Aluno[i].NomeResponsavel : '-'
-            },
-            {
-                label: "Pai",
-                value: Aluno[i].NomePai ? Aluno[i].NomePai : '-'
-            },
-            {
-                label: "Mãe",
-                value: Aluno[i].NomeMae ? Aluno[i].NomeMae : '-'
-            });
+        let Aluno = await bancoServices.dadosAlunos(cpf);
+    
+        for (let i in Aluno) {
+          json.result.push({
+            label: "Nome do aluno",
+            value: Aluno[i].NomeAluno
+          },
+          {
+            label: "CPF",
+            value: Aluno[i].cpf
+          },
+          {
+            label: "RG",
+            value: Aluno[i].rg
+          },
+          {
+            label: "Sexo",
+            value: Aluno[i].sexo
+          },
+          {
+            label: "Data de nascimento",
+            value: Aluno[i].data_nascimento
+          },
+          {
+            label: "Telefone",
+            value: Aluno[i].telefone
+          },
+          {
+            label: "Email",
+            value: Aluno[i].email ? Aluno[i].email : '-'
+          },
+          {
+            label: "Matrícula",
+            value: Aluno[i].matricula
+          },
+          {
+            label: "Turma",
+            value: Aluno[i].NomeTurma
+          },
+          {
+            label: "Série",
+            value: Aluno[i].NomeSerie
+          },
+          {
+            label: "Responsável",
+            value: Aluno[i].NomeResponsavel ? Aluno[i].NomeResponsavel : '-'
+          },
+          {
+            label: "Pai",
+            value: Aluno[i].NomePai ? Aluno[i].NomePai : '-'
+          },
+          {
+            label: "Mãe",
+            value: Aluno[i].NomeMae ? Aluno[i].NomeMae : '-'
+          });
         }
+    
         res.json(json);
+      } catch (error) {
+        console.error(error);
+        res.status(500).send({ msg: "Ocorreu um erro ao buscar os dados do aluno" });
+      }
     },
     
-    dadosResponsavel: async(req, res) => {
-        let json = {error:'', result:[]};
-
+    dadosResponsavel: async (req, res) => {
+      try {
+        let json = { error: '', result: [] };
         let cpf = req.params.cpf;
         let resp = await bancoServices.dadosResponsavel(cpf);
-
-        for(let i in resp){
-            json.result.push(
+    
+        for (let i in resp) {
+          json.result.push(
             {
-                label: "Nome do Responsável",
-                value: resp[i].NomeR
+              label: "Nome do Responsável",
+              value: resp[i].NomeR
             },
             {
-                label: "CPF",
-                value: resp[i].cpf
+              label: "CPF",
+              value: resp[i].cpf
             },
             {
-                label: "RG",
-                value: resp[i].rg
+              label: "RG",
+              value: resp[i].rg
             },
             {
-                label: "Data de nascimento",
-                value: resp[i].data_nascimento
+              label: "Data de nascimento",
+              value: resp[i].data_nascimento
             },
             {
-                label: "Sexo",
-                value: resp[i].sexo
+              label: "Sexo",
+              value: resp[i].sexo
             },
             {
-                label: "Telefone 1",
-                value: resp[i].telefone
+              label: "Telefone 1",
+              value: resp[i].telefone
             },
             {
-                label: "Telefone 2",
-                value: resp[i].telefone_2 ? resp[i].telefone_2 : '-'
+              label: "Telefone 2",
+              value: resp[i].telefone_2 ? resp[i].telefone_2 : '-'
             },
             {
-                label: "Email",
-                value: resp[i].email ? resp[i].email : '-'
+              label: "Email",
+              value: resp[i].email ? resp[i].email : '-'
             });
         }
+    
         res.json(json);
+      } catch (error) {
+        console.error(error);
+        res.status(500).send({ msg: "Ocorreu um erro ao buscar os dados do responsável" });
+      }
     },
 
     insertAluno: async (req, res) => {
@@ -175,23 +198,40 @@ module.exports = {
         res.send({ msg: "Aluno cadastrado com sucesso" });
       } catch (error) {
         console.error(error);
-        res.status(500).send({ msg: "Erro interno do servidor" });
+        res.status(500).send({ msg: "Erro ao cadastrar aluno" });
       }
     },
+
+    insertResp: async (req, res) => {
+        try {
+          const { nome, cpf, rg, data_nascimento, email, telefone, sexo, senha } = req.body;
+      
+          await bancoServices.insertResp(nome, cpf, rg, data_nascimento, email, telefone, sexo, senha);
+      
+          res.send({ msg: "Responsável cadastrado com sucesso" });
+        } catch (error) {
+          console.error(error);
+          res.status(500).send({ msg: "Erro ao cadastrar Responsável" });
+        }
+      },
     
 
-    updateAluno: async(req,res) => {
+    updateAluno: async (req, res) => {
+      try {
         const { nome, cpf, rg, data_nascimento, email, telefone } = req.body;
 
         const upAluno = await bancoServices.updateAluno(nome, cpf, rg, data_nascimento, email, telefone, cpf);
-
-        if(upAluno){
-            res.send({msg: "dados atualizados com sucesso"})
-        }else{
-            res.send({msg: "Erro"})
+        if (upAluno) {
+          res.send({ msg: "Dados atualizados com sucesso" });
+        } else {
+          res.send({ msg: "Erro ao atualizar os dados do aluno, cpf informado está diferente do cpf informado anteriormente" });
         }
-        
+      } catch (error) {
+        console.error(error);
+        res.status(500).send({ msg: "Ocorreu um erro ao atualizar o aluno" });
+      }
     },
+    
 
     login: async (req, res) => {
       try {

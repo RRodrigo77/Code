@@ -440,6 +440,10 @@ LEFT JOIN TbResponsavel ON TbResponsavel.IdResponsavel = TbAluno.IdResponsavel
 LEFT JOIN TbResponsavel AS RP ON RP.IdResponsavel = TbAluno.IdPai AND RP.IdResponsavel = TbResponsavel.IdResponsavel
 LEFT JOIN TbResponsavel AS RM ON RM.IdResponsavel = TbAluno.IdMae AND RM.IdResponsavel = TbResponsavel.IdResponsavel;
 
+drop view Vw_dados_alunos
+SELECT * FROM Vw_dados_alunos
+select * from tbresponsavel
+
 SELECT 
   TbAluno.NomeAluno,
   TbAluno.telefone,
@@ -459,6 +463,12 @@ INNER JOIN TbTurma ON TbTurma.IdTurma = TbAlunoTurma.IdTurma
 INNER JOIN TbSerie ON TbTurma.IdSerie = TbSerie.IdSerie
 LEFT JOIN TbResponsavel ON TbResponsavel.IdResponsavel = TbAluno.IdResponsavel
 LEFT JOIN TbResponsavel AS RP ON RP.IdResponsavel = TbAluno.IdPai AND RP.IdResponsavel = TbResponsavel.IdResponsavel
-LEFT JOIN TbResponsavel AS RM ON RM.IdResponsavel = TbAluno.IdMae AND RM.IdResponsavel = TbResponsavel.IdResponsavel;
+LEFT JOIN TbResponsavel AS RM ON RM.IdResponsavel = TbAluno.IdMae AND RM.IdResponsavel = TbResponsavel.IdResponsavel
+where TbAluno.cpf = '11111111111'
 
 select * from Vw_dados_alunos where TbAluno.cpf = ?
+select * from Vw_dados_alunos where cpf = '11111111111'
+
+select * from tbaluno
+
+ALTER TABLE tbresponsavel MODIFY telefone_2 int NULL;
