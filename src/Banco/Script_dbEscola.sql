@@ -48,7 +48,7 @@ CREATE TABLE `tbaluno` (
   CONSTRAINT `FK_Aluno_Mae` FOREIGN KEY (`IdMae`) REFERENCES `tbresponsavel` (`IdResponsavel`),
   CONSTRAINT `FK_Aluno_Pai` FOREIGN KEY (`IdPai`) REFERENCES `tbresponsavel` (`IdResponsavel`),
   CONSTRAINT `FK_Aluno_Responsavel` FOREIGN KEY (`IdResponsavel`) REFERENCES `tbresponsavel` (`IdResponsavel`)
-) ENGINE=InnoDB AUTO_INCREMENT=77 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=81 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -57,7 +57,7 @@ CREATE TABLE `tbaluno` (
 
 LOCK TABLES `tbaluno` WRITE;
 /*!40000 ALTER TABLE `tbaluno` DISABLE KEYS */;
-INSERT INTO `tbaluno` VALUES (22,'henrique','1995-03-11',NULL,NULL,NULL,NULL,'11111111111','002513202',NULL,'(84) 999434387',20230002,'M','a665a45920422f9d417e4867efdc4fb8a04a1f3fff1fa07e998e86f7f7a27ae3'),(23,'Miguel','1995-03-11',NULL,NULL,NULL,'miguel@gmail.com','341242144','002513202',NULL,'(84) 999434387',20220003,'M','a665a45920422f9d417e4867efdc4fb8a04a1f3fff1fa07e998e86f7f7a27ae3'),(43,'Rodrigo','1995-03-11',NULL,NULL,NULL,'rodrigo@gmail.com','10394343476','002513202',NULL,'(84) 999434387',20230004,'M','7795ef546202c111f3b6ba9d74fe2becb1a88e39244eb040f4f09405b180cefc');
+INSERT INTO `tbaluno` VALUES (22,'Henrique','1995-01-11',NULL,NULL,NULL,'exemplo@exemplo.com','12312312311','123456789',NULL,'(00)000000000',20230002,'M','a665a45920422f9d417e4867efdc4fb8a04a1f3fff1fa07e998e86f7f7a27ae3'),(23,'Miguel','1995-03-11',NULL,NULL,NULL,'miguel@gmail.com','341242144','002513202',NULL,'(84) 999434387',20220003,'M','a665a45920422f9d417e4867efdc4fb8a04a1f3fff1fa07e998e86f7f7a27ae3'),(43,'Rodrigo','1995-03-11',NULL,NULL,NULL,'rodrigo@gmail.com','10394343476','002513202',NULL,'(84) 999434387',20230004,'M','7795ef546202c111f3b6ba9d74fe2becb1a88e39244eb040f4f09405b180cefc'),(78,'Rodrigo teste insert','1995-01-11',NULL,NULL,NULL,'exemplo@exemplo.com','11111111111','123456789',NULL,'(00)000000000',20230006,'M',NULL),(79,'Samantha Costa Ribeiro','1993-07-27',NULL,NULL,NULL,'samanthacostaribeiro@gmail.com','10121045404','3017116',NULL,'(84)999787542',20230007,'F','8d969eef6ecad3c29a3a629280e686cf0c3f5d5a86aff3ca12020c923adc6c92'),(80,'Samantha Costa Ribeiro','1993-07-27',NULL,NULL,NULL,'exemplo@gmail.com','98712398737','000000000',NULL,'(84)999999999',20230008,'F','bb7814513ea0991120e7f8b2e128db61621875e27e4f6168a729c23ba19796de');
 /*!40000 ALTER TABLE `tbaluno` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -112,6 +112,38 @@ LOCK TABLES `tbcurso` WRITE;
 /*!40000 ALTER TABLE `tbcurso` DISABLE KEYS */;
 INSERT INTO `tbcurso` VALUES (1,'Ensino Médio',_binary ''),(2,'Fundamental I',_binary ''),(3,'Fundamental II',_binary '');
 /*!40000 ALTER TABLE `tbcurso` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `tbdiario`
+--
+
+DROP TABLE IF EXISTS `tbdiario`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `tbdiario` (
+  `IdDiario` int NOT NULL AUTO_INCREMENT,
+  `nomeDiario` varchar(100) DEFAULT NULL,
+  `IdProfessor` int DEFAULT NULL,
+  `IdDisciplina` int DEFAULT NULL,
+  `IdTurma` int DEFAULT NULL,
+  PRIMARY KEY (`IdDiario`),
+  KEY `IdProfessor` (`IdProfessor`),
+  KEY `IdDisciplina` (`IdDisciplina`),
+  KEY `IdTurma` (`IdTurma`),
+  CONSTRAINT `tbdiario_ibfk_1` FOREIGN KEY (`IdProfessor`) REFERENCES `tbprofessor` (`IdProfessor`),
+  CONSTRAINT `tbdiario_ibfk_2` FOREIGN KEY (`IdDisciplina`) REFERENCES `tbdisciplina` (`IdDisciplina`),
+  CONSTRAINT `tbdiario_ibfk_3` FOREIGN KEY (`IdTurma`) REFERENCES `tbturma` (`IdTurma`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `tbdiario`
+--
+
+LOCK TABLES `tbdiario` WRITE;
+/*!40000 ALTER TABLE `tbdiario` DISABLE KEYS */;
+/*!40000 ALTER TABLE `tbdiario` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -352,6 +384,42 @@ LOCK TABLES `tbprofessor` WRITE;
 UNLOCK TABLES;
 
 --
+-- Table structure for table `tbregistrodiario`
+--
+
+DROP TABLE IF EXISTS `tbregistrodiario`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `tbregistrodiario` (
+  `Idregistro` int NOT NULL AUTO_INCREMENT,
+  `IdDiario` int DEFAULT NULL,
+  `IdDisciplina` int DEFAULT NULL,
+  `IdProfessor` int DEFAULT NULL,
+  `IdTurma` int DEFAULT NULL,
+  `conteudo` text,
+  `data` date DEFAULT NULL,
+  PRIMARY KEY (`Idregistro`),
+  KEY `IdDiario` (`IdDiario`),
+  KEY `IdProfessor` (`IdProfessor`),
+  KEY `IdDisciplina` (`IdDisciplina`),
+  KEY `IdTurma` (`IdTurma`),
+  CONSTRAINT `tbregistrodiario_ibfk_1` FOREIGN KEY (`IdDiario`) REFERENCES `tbdiario` (`IdDiario`),
+  CONSTRAINT `tbregistrodiario_ibfk_2` FOREIGN KEY (`IdProfessor`) REFERENCES `tbprofessor` (`IdProfessor`),
+  CONSTRAINT `tbregistrodiario_ibfk_3` FOREIGN KEY (`IdDisciplina`) REFERENCES `tbdisciplina` (`IdDisciplina`),
+  CONSTRAINT `tbregistrodiario_ibfk_4` FOREIGN KEY (`IdTurma`) REFERENCES `tbturma` (`IdTurma`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `tbregistrodiario`
+--
+
+LOCK TABLES `tbregistrodiario` WRITE;
+/*!40000 ALTER TABLE `tbregistrodiario` DISABLE KEYS */;
+/*!40000 ALTER TABLE `tbregistrodiario` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `tbresponsavel`
 --
 
@@ -472,7 +540,7 @@ CREATE TABLE `tbusuario` (
 
 LOCK TABLES `tbusuario` WRITE;
 /*!40000 ALTER TABLE `tbusuario` DISABLE KEYS */;
-INSERT INTO `tbusuario` VALUES (1,'Rodrigo Rodrigues','Diretor','a665a45920422f9d417e4867efdc4fb8a04a1f3fff1fa07e998e86f7f7a27ae3',_binary '','10394343476','002513202','');
+INSERT INTO `tbusuario` VALUES (1,'Rodrigo Rodrigues','Diretor','a665a45920422f9d417e4867efdc4fb8a04a1f3fff1fa07e998e86f7f7a27ae3',_binary '','10394343476','002513202','M');
 /*!40000 ALTER TABLE `tbusuario` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -496,6 +564,30 @@ SET @saved_cs_client     = @@character_set_client;
 SET character_set_client = @saved_cs_client;
 
 --
+-- Temporary view structure for view `vw_dados_alunos`
+--
+
+DROP TABLE IF EXISTS `vw_dados_alunos`;
+/*!50001 DROP VIEW IF EXISTS `vw_dados_alunos`*/;
+SET @saved_cs_client     = @@character_set_client;
+/*!50503 SET character_set_client = utf8mb4 */;
+/*!50001 CREATE VIEW `vw_dados_alunos` AS SELECT 
+ 1 AS `NomeAluno`,
+ 1 AS `telefone`,
+ 1 AS `cpf`,
+ 1 AS `rg`,
+ 1 AS `data_nascimento`,
+ 1 AS `email`,
+ 1 AS `matricula`,
+ 1 AS `NomeTurma`,
+ 1 AS `NomeSerie`,
+ 1 AS `NomeResponsavel`,
+ 1 AS `NomePai`,
+ 1 AS `NomeMae`,
+ 1 AS `sexo`*/;
+SET character_set_client = @saved_cs_client;
+
+--
 -- Final view structure for view `vw_aluno_situacao`
 --
 
@@ -512,6 +604,24 @@ SET character_set_client = @saved_cs_client;
 /*!50001 SET character_set_client      = @saved_cs_client */;
 /*!50001 SET character_set_results     = @saved_cs_results */;
 /*!50001 SET collation_connection      = @saved_col_connection */;
+
+--
+-- Final view structure for view `vw_dados_alunos`
+--
+
+/*!50001 DROP VIEW IF EXISTS `vw_dados_alunos`*/;
+/*!50001 SET @saved_cs_client          = @@character_set_client */;
+/*!50001 SET @saved_cs_results         = @@character_set_results */;
+/*!50001 SET @saved_col_connection     = @@collation_connection */;
+/*!50001 SET character_set_client      = utf8mb4 */;
+/*!50001 SET character_set_results     = utf8mb4 */;
+/*!50001 SET collation_connection      = utf8mb4_0900_ai_ci */;
+/*!50001 CREATE ALGORITHM=UNDEFINED */
+/*!50013 DEFINER=`root`@`localhost` SQL SECURITY DEFINER */
+/*!50001 VIEW `vw_dados_alunos` AS select `tbaluno`.`nomeAluno` AS `NomeAluno`,`tbaluno`.`telefone` AS `telefone`,`tbaluno`.`CPF` AS `cpf`,`tbaluno`.`RG` AS `rg`,date_format(`tbaluno`.`data_nascimento`,'%d/%m/%Y') AS `data_nascimento`,`tbaluno`.`email` AS `email`,`tbaluno`.`matricula` AS `matricula`,`tbturma`.`NomeTurma` AS `NomeTurma`,`tbserie`.`NomeSerie` AS `NomeSerie`,`tbresponsavel`.`NomeR` AS `NomeResponsavel`,`rp`.`NomeR` AS `NomePai`,`rm`.`NomeR` AS `NomeMae`,(case `tbaluno`.`sexo` when 'M' then 'Masculino' when 'F' then 'Feminino' when 'O' then 'Outro' end) AS `sexo` from ((((((`tbaluno` join `tbalunoturma` on((`tbalunoturma`.`IdAluno` = `tbaluno`.`IdAluno`))) join `tbturma` on((`tbturma`.`IdTurma` = `tbalunoturma`.`IdTurma`))) join `tbserie` on((`tbturma`.`IdSerie` = `tbserie`.`IdSerie`))) left join `tbresponsavel` on((`tbresponsavel`.`IdResponsavel` = `tbaluno`.`IdResponsavel`))) left join `tbresponsavel` `rp` on(((`rp`.`IdResponsavel` = `tbaluno`.`IdPai`) and (`rp`.`IdResponsavel` = `tbresponsavel`.`IdResponsavel`)))) left join `tbresponsavel` `rm` on(((`rm`.`IdResponsavel` = `tbaluno`.`IdMae`) and (`rm`.`IdResponsavel` = `tbresponsavel`.`IdResponsavel`)))) */;
+/*!50001 SET character_set_client      = @saved_cs_client */;
+/*!50001 SET character_set_results     = @saved_cs_results */;
+/*!50001 SET collation_connection      = @saved_col_connection */;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
@@ -522,4 +632,4 @@ SET character_set_client = @saved_cs_client;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2023-06-09  0:25:31
+-- Dump completed on 2023-06-10 14:36:06

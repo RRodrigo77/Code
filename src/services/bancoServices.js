@@ -28,28 +28,7 @@ module.exports = {
 
   dadosAlunos: (cpf) => {
     return new Promise((aceito, rejeitado) => {
-      dbEscola.query(`SELECT 
-          TbAluno.NomeAluno,
-          TbAluno.telefone,
-          TbAluno.cpf,
-          TbAluno.rg,
-          DATE_FORMAT(TbAluno.data_nascimento, '%d/%m/%Y') AS data_nascimento,
-          TbAluno.email,
-          TbAluno.matricula,
-          TbTurma.NomeTurma,          
-          TbSerie.NomeSerie,
-          TbResponsavel.NomeR AS NomeResponsavel,
-          RP.NomeR AS NomePai,
-          RM.NomeR AS NomeMae  
-        FROM TbAluno
-        INNER JOIN TbAlunoTurma ON TbAlunoTurma.IdAluno = TbAluno.IdAluno
-        INNER JOIN TbTurma ON TbTurma.IdTurma = TbAlunoTurma.IdTurma
-        INNER JOIN TbSerie ON TbTurma.IdSerie = TbSerie.IdSerie
-        LEFT JOIN TbResponsavel ON TbResponsavel.IdResponsavel = TbAluno.IdResponsavel
-        LEFT JOIN TbResponsavel AS RP ON RP.IdResponsavel = TbAluno.IdPai AND RP.IdResponsavel = TbResponsavel.IdResponsavel
-        LEFT JOIN TbResponsavel AS RM ON RM.IdResponsavel = TbAluno.IdMae AND RM.IdResponsavel = TbResponsavel.IdResponsavel
-        WHERE TbAluno.cpf = ?`,
-        // [`%${nome}%`], (error, result) => {
+      dbEscola.query(`select * from Vw_dados_alunos where cpf = ?`, // Criada VVw_dados_alunos para consultar dados alunos
         [cpf], (error, result) => {
           if (error) {
             rejeitado(error);
@@ -122,17 +101,19 @@ module.exports = {
   },
   // Pensar em mais parametros para realizar o update
   // realizar mais teste para melhorar a implementação do update
-  UPDATEaluno: (nome, cpf, rg, data_nascimento, email, telefone) => {
+  updateAluno: (nome, cpf, rg, data_nascimento, email, telefone) => {
     return new Promise((aceito, rejeitado) => {
-      dbEscola.query(`SELECT cpf, senha FROM Tbaluno WHERE cpf = ?`,
+      dbEscola.query(`SELECT cpf FROM Tbaluno WHERE cpf = ?`,
         [cpf], (error, result) => {
           if (error) {
             rejeitado(error);
             return;
           }
           if (result.length > [0]) {
-            dbEscola.query(`UPDATE TbAluno SET NomeAluno = ?, cpf = ?, rg = ?, data_nascimento = ?, email = ?, telefone = ?  
-            WHERE IdAluno = 77;`,
+            dbEscola.query(`
+            UPDATE TbAluno SET NomeAluno = ?, cpf = ?, rg = ?, data_nascimento = ?, email = ?, telefone = ?  
+            WHERE idaluno = 22;
+            `,
               [nome, cpf, rg, data_nascimento, email, telefone, cpf], (error, result) => {
                 if (error) {
                   rejeitado(error);
@@ -151,5 +132,27 @@ module.exports = {
           }
         });
     })
+  },
+
+  // continuar criando insert
+  insertAluno: (nome, cpf, rg, data_nascimento, email, telefone, sexo, senha)  => {
+    return new Promise((aceito, rejeitado) => {
+      dbEscola.query(`
+      INSERT INTO tbaluno
+        (nomeAluno, data_nascimento, CPF, RG, sexo, telefone, email, senha)
+      VALUES(?,?,?,?,?,?,?,SHA2(?, 256));
+        `,
+        [nome, data_nascimento, cpf, rg, sexo, telefone, email, senha], (error, result) => {
+          if (error) {
+            rejeitado(error);
+            return;
+          }
+          if (result.length > [0]) {
+            aceito(result);
+          } else {
+            aceito(false);
+          }
+        });
+    });
   }
 }

@@ -4,7 +4,7 @@ const crypto = require('crypto');
 //Controlador
 
 module.exports = {
-    buscarAlunos: async(req, res) => {
+    buscarAlunos: async(res) => {
         let json = {error:'', result:[]};
 
         let Aluno = await bancoServices.buscarAlunos();
@@ -69,7 +69,8 @@ module.exports = {
         let Aluno = await bancoServices.dadosAlunos(cpf); // Recebe CPF por parâmetro
 
         for(let i in Aluno){
-            json.result.push({
+            json.result.push(
+            {
                 label: "Nome do aluno",
                 value: Aluno[i].NomeAluno
             },
@@ -128,7 +129,8 @@ module.exports = {
         let resp = await bancoServices.dadosResponsavel(cpf);
 
         for(let i in resp){
-            json.result.push({
+            json.result.push(
+            {
                 label: "Nome do Responsável",
                 value: resp[i].NomeR
             },
@@ -154,7 +156,7 @@ module.exports = {
             },
             {
                 label: "Telefone 2",
-                value: resp[i].telefone_2
+                value: resp[i].telefone_2 ? resp[i].telefone_2 : '-'
             },
             {
                 label: "Email",
@@ -164,18 +166,26 @@ module.exports = {
         res.json(json);
     },
 
-    UPDADEaluno: async(req,res) => {
-        const nome = req.body.nome;
-        const cpf = req.body.cpf;
-        const rg = req.body.rg;
-        const data_nascimento = req.body.data_nascimento;
-        const email = req.body.email;
-        const telefone = req.body.telefone;
+    insertAluno: async (req, res) => {
+      try {
+        const { nome, cpf, rg, data_nascimento, email, telefone, sexo, senha } = req.body;
+    
+        await bancoServices.insertAluno(nome, cpf, rg, data_nascimento, email, telefone, sexo, senha);
+    
+        res.send({ msg: "Aluno cadastrado com sucesso" });
+      } catch (error) {
+        console.error(error);
+        res.status(500).send({ msg: "Erro interno do servidor" });
+      }
+    },
+    
 
-        const upAluno = await bancoServices.UPDATEaluno(nome, cpf, rg, data_nascimento, email, telefone, cpf);
+    updateAluno: async(req,res) => {
+        const { nome, cpf, rg, data_nascimento, email, telefone } = req.body;
+
+        const upAluno = await bancoServices.updateAluno(nome, cpf, rg, data_nascimento, email, telefone, cpf);
 
         if(upAluno){
-            console.log()
             res.send({msg: "dados atualizados com sucesso"})
         }else{
             res.send({msg: "Erro"})
@@ -183,28 +193,26 @@ module.exports = {
         
     },
 
-    login: async(req, res) => {     
-        const cpf = req.body.cpf;
-        const senha = req.body.senha;
-        const userType = req.body.userType;
-
-        const senhaHash = crypto.createHash('sha256').update(senha).digest('hex');    
+    login: async (req, res) => {
+      try {
+        const { cpf, senha, userType } = req.body;
         
-        const result = await bancoServices.login(cpf,userType);
-
+        const senhaHash = crypto.createHash("sha256").update(senha).digest("hex");
+    
+        const result = await bancoServices.login(cpf, userType);
+    
         if (result.length > 0) {
-            if(result[0].senha === senhaHash){
-              res.send({ msg: "Usuário logado com sucesso" });
-            //   console.log("cpf informado:        " + cpf);
-            //   console.log("cpf salvo no banco:   " + cpf);
-            //   console.log("senha informada:      " + senha);
-            //   console.log("senha salva no banco: " + senhaHash);
-            }else{
-              res.send({ msg: "Senha incorreta" });
-            } 
+          if (result[0].senha === senhaHash) {
+            res.send({ msg: "Usuário logado com sucesso" });
           } else {
-            res.send({ msg: "Credenciais inválidas" });
-            // console.log("senha informada:      " + senha);
-          }      
-    }
+            res.send({ msg: "Senha incorreta" });
+          }
+        } else {
+          res.send({ msg: "Credenciais inválidas" });
+        }
+      } catch (error) {
+        console.error(error);
+        res.status(500).send({ msg: "Ocorreu um erro ao fazer login" });
+      }
+    }    
 }
