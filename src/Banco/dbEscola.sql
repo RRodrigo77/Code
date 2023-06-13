@@ -495,5 +495,4 @@ UPDATE TbAluno set senha = SHA2('12345', 256) where idaluno = 78
 
 select * from tbusuario;
 
-delete from tbaluno where idaluno = 79
 
