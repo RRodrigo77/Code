@@ -464,11 +464,33 @@ INNER JOIN TbSerie ON TbTurma.IdSerie = TbSerie.IdSerie
 LEFT JOIN TbResponsavel ON TbResponsavel.IdResponsavel = TbAluno.IdResponsavel
 LEFT JOIN TbResponsavel AS RP ON RP.IdResponsavel = TbAluno.IdPai AND RP.IdResponsavel = TbResponsavel.IdResponsavel
 LEFT JOIN TbResponsavel AS RM ON RM.IdResponsavel = TbAluno.IdMae AND RM.IdResponsavel = TbResponsavel.IdResponsavel
-where TbAluno.cpf = '11111111111'
+where TbAluno.idaluno > 1
 
 select * from Vw_dados_alunos where TbAluno.cpf = ?
 select * from Vw_dados_alunos where cpf = '11111111111'
 
-select * from tbaluno
+select * from tbresponsavel
 
-ALTER TABLE tbresponsavel MODIFY telefone_2 int NULL;
+ALTER TABLE tbresponsavel MODIFY telefone_2 VARCHAR(15) NULL;
+
+INSERT INTO tbprofessor (NomeProfessor, cpf, RG, email, telefone, StAtivo, sexo, senha) values('Josemar da Silva', '13970265029', '123334445', 'emaildoprofessor@gmail.com','(84)999444487',1,'M', SHA2('123', 256))
+
+update tbprofessor set senha = SHA2('123', 256) where idprofessor =1
+
+SELECT NomeProfessor, cpf, RG, email, telefone,
+        CASE
+            WHEN sexo = 'M' THEN 'Masculino'
+            WHEN sexo = 'F' THEN 'Feminino'
+            ELSE 'Outro'
+        END AS sexo,
+        CASE
+            WHEN StAtivo = 1 THEN 'Ativo'
+            ELSE 'Inativo'
+        END AS status,
+        senha
+    FROM TbProfessor
+    WHERE cpf = "28183403069"
+    
+    delete from tbresponsavel where idresponsavel > 1
+    select * from tbaluno
+
