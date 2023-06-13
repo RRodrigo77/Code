@@ -473,9 +473,9 @@ select * from tbresponsavel
 
 ALTER TABLE tbresponsavel MODIFY telefone_2 VARCHAR(15) NULL;
 
-INSERT INTO tbprofessor (NomeProfessor, cpf, RG, email, telefone, StAtivo, sexo, senha) values('Josemar da Silva', '13970265029', '123334445', 'emaildoprofessor@gmail.com','(84)999444487',1,'M', SHA2('123', 256))
+INSERT INTO tbprofessor (NomeProfessor, cpf, RG, email, telefone, StAtivo, sexo, senha) values('Josemar da Silva', '13970265029', '123334445', 'emaildoprofessor@gmail.com','(84)999444487',1,'M', SHA2('123', 256));
 
-update tbprofessor set senha = SHA2('123', 256) where idprofessor =1
+update tbprofessor set senha = SHA2('123', 256) where idprofessor =1;
 
 SELECT NomeProfessor, cpf, RG, email, telefone,
         CASE
@@ -491,6 +491,9 @@ SELECT NomeProfessor, cpf, RG, email, telefone,
     FROM TbProfessor
     WHERE cpf = "28183403069"
     
-    delete from tbresponsavel where idresponsavel > 1
-    select * from tbaluno
+UPDATE TbAluno set senha = SHA2('12345', 256) where idaluno = 78
+
+select * from tbusuario;
+
+delete from tbaluno where idaluno = 79
 

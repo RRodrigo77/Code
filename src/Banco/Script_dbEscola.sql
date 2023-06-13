@@ -48,7 +48,7 @@ CREATE TABLE `tbaluno` (
   CONSTRAINT `FK_Aluno_Mae` FOREIGN KEY (`IdMae`) REFERENCES `tbresponsavel` (`IdResponsavel`),
   CONSTRAINT `FK_Aluno_Pai` FOREIGN KEY (`IdPai`) REFERENCES `tbresponsavel` (`IdResponsavel`),
   CONSTRAINT `FK_Aluno_Responsavel` FOREIGN KEY (`IdResponsavel`) REFERENCES `tbresponsavel` (`IdResponsavel`)
-) ENGINE=InnoDB AUTO_INCREMENT=81 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=82 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -57,7 +57,7 @@ CREATE TABLE `tbaluno` (
 
 LOCK TABLES `tbaluno` WRITE;
 /*!40000 ALTER TABLE `tbaluno` DISABLE KEYS */;
-INSERT INTO `tbaluno` VALUES (22,'Henrique','1995-01-11',NULL,NULL,NULL,'exemplo@exemplo.com','12312312311','123456789',NULL,'(00)000000000',20230002,'M','a665a45920422f9d417e4867efdc4fb8a04a1f3fff1fa07e998e86f7f7a27ae3'),(23,'Miguel','1995-03-11',NULL,NULL,NULL,'miguel@gmail.com','341242144','002513202',NULL,'(84) 999434387',20220003,'M','a665a45920422f9d417e4867efdc4fb8a04a1f3fff1fa07e998e86f7f7a27ae3'),(43,'Rodrigo','1995-03-11',NULL,NULL,NULL,'rodrigo@gmail.com','10394343476','002513202',NULL,'(84) 999434387',20230004,'M','7795ef546202c111f3b6ba9d74fe2becb1a88e39244eb040f4f09405b180cefc'),(78,'Rodrigo teste insert','1995-01-11',NULL,NULL,NULL,'exemplo@exemplo.com','11111111111','123456789',NULL,'(00)000000000',20230006,'M',NULL),(79,'Samantha Costa Ribeiro','1993-07-27',NULL,NULL,NULL,'samanthacostaribeiro@gmail.com','10121045404','3017116',NULL,'(84)999787542',20230007,'F','8d969eef6ecad3c29a3a629280e686cf0c3f5d5a86aff3ca12020c923adc6c92'),(80,'Samantha Costa Ribeiro','1993-07-27',NULL,NULL,NULL,'exemplo@gmail.com','98712398737','000000000',NULL,'(84)999999999',20230008,'F','bb7814513ea0991120e7f8b2e128db61621875e27e4f6168a729c23ba19796de');
+INSERT INTO `tbaluno` VALUES (22,'Henrique','1995-01-11',NULL,NULL,NULL,'Henrique@gmail.com','12312312311','123456789',NULL,'(00)000000000',20230002,'M','a665a45920422f9d417e4867efdc4fb8a04a1f3fff1fa07e998e86f7f7a27ae3'),(23,'Miguel','1995-03-11',NULL,NULL,NULL,'miguel@gmail.com','341242144','002513202',NULL,'(84) 999434387',20220003,'M','a665a45920422f9d417e4867efdc4fb8a04a1f3fff1fa07e998e86f7f7a27ae3'),(43,'Rodrigo','1995-03-11',NULL,NULL,NULL,'rodrigo@gmail.com','10394343476','002513202',NULL,'(84) 999434387',20230004,'M','7795ef546202c111f3b6ba9d74fe2becb1a88e39244eb040f4f09405b180cefc'),(78,'Rodrigo teste insert','1995-01-11',NULL,NULL,NULL,'exemplo@exemplo.com','11111111111','123456710',NULL,'(00)000000000',20230006,'M','5994471abb01112afcc18159f6cc74b4f511b99806da59b3caf5a9c173cacfc5'),(80,'Samantha Costa Ribeiro','1993-07-27',NULL,NULL,NULL,'exemplo@gmail.com','98712398737','000000000',NULL,'(84)999999999',20230008,'F','bb7814513ea0991120e7f8b2e128db61621875e27e4f6168a729c23ba19796de'),(81,'Fabricio','1993-01-01',NULL,NULL,NULL,'fabricio@gmail.com','98712383766','000000000',NULL,'(84)999999999',20230009,'M','8d969eef6ecad3c29a3a629280e686cf0c3f5d5a86aff3ca12020c923adc6c92');
 /*!40000 ALTER TABLE `tbaluno` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -364,14 +364,14 @@ CREATE TABLE `tbprofessor` (
   `RG` varchar(20) NOT NULL,
   `email` varchar(100) DEFAULT NULL,
   `telefone` varchar(15) DEFAULT NULL,
-  `IdEndereco` int NOT NULL,
+  `idendereco` int DEFAULT NULL,
   `StAtivo` bit(1) NOT NULL,
   `senha` varchar(256) DEFAULT NULL,
   `sexo` char(1) NOT NULL,
   PRIMARY KEY (`IdProfessor`),
-  KEY `FK_Professor_Endereco` (`IdEndereco`),
-  CONSTRAINT `FK_Professor_Endereco` FOREIGN KEY (`IdEndereco`) REFERENCES `tbendereco` (`IdEndereco`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+  KEY `FK_Professor_Endereco` (`idendereco`),
+  CONSTRAINT `FK_Professor_Endereco` FOREIGN KEY (`idendereco`) REFERENCES `tbendereco` (`IdEndereco`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -380,6 +380,7 @@ CREATE TABLE `tbprofessor` (
 
 LOCK TABLES `tbprofessor` WRITE;
 /*!40000 ALTER TABLE `tbprofessor` DISABLE KEYS */;
+INSERT INTO `tbprofessor` VALUES (1,'Josemar da Silva','13970265029','123334445','emaildoprofessor@gmail.com','(84)999444487',NULL,_binary '','a665a45920422f9d417e4867efdc4fb8a04a1f3fff1fa07e998e86f7f7a27ae3','M'),(2,'Ademar de Lima','28183403069','998899090','emailademar@gmail.com','(84)99994444',NULL,_binary '','a665a45920422f9d417e4867efdc4fb8a04a1f3fff1fa07e998e86f7f7a27ae3','M');
 /*!40000 ALTER TABLE `tbprofessor` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -433,15 +434,15 @@ CREATE TABLE `tbresponsavel` (
   `email` varchar(100) DEFAULT NULL,
   `CPF` varchar(11) NOT NULL,
   `RG` varchar(10) NOT NULL,
-  `IdEndereco` int NOT NULL,
+  `Idendereco` int DEFAULT NULL,
   `telefone` varchar(15) NOT NULL,
-  `telefone_2` varchar(15) NOT NULL,
+  `telefone_2` varchar(15) DEFAULT NULL,
   `senha` varchar(256) DEFAULT NULL,
   `sexo` char(1) NOT NULL,
   PRIMARY KEY (`IdResponsavel`),
-  KEY `FK_Responsavel_Endereco` (`IdEndereco`),
-  CONSTRAINT `FK_Responsavel_Endereco` FOREIGN KEY (`IdEndereco`) REFERENCES `tbendereco` (`IdEndereco`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+  KEY `FK_Responsavel_Endereco` (`Idendereco`),
+  CONSTRAINT `FK_Responsavel_Endereco` FOREIGN KEY (`Idendereco`) REFERENCES `tbendereco` (`IdEndereco`)
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -450,6 +451,7 @@ CREATE TABLE `tbresponsavel` (
 
 LOCK TABLES `tbresponsavel` WRITE;
 /*!40000 ALTER TABLE `tbresponsavel` DISABLE KEYS */;
+INSERT INTO `tbresponsavel` VALUES (1,'Ricardo Rodrigues','1993-01-01','ricardo@gmail.com','12332112322','000000000',NULL,'(84)999999999',NULL,'8d969eef6ecad3c29a3a629280e686cf0c3f5d5a86aff3ca12020c923adc6c92','M'),(6,'pai teste','1993-01-01','paiteste5@gmail.com','12332112328','000000009',NULL,'(84)999999999',NULL,'8d969eef6ecad3c29a3a629280e686cf0c3f5d5a86aff3ca12020c923adc6c92','M');
 /*!40000 ALTER TABLE `tbresponsavel` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -531,7 +533,7 @@ CREATE TABLE `tbusuario` (
   `RG` varchar(20) NOT NULL,
   `sexo` char(1) NOT NULL,
   PRIMARY KEY (`IdUsuario`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -540,7 +542,7 @@ CREATE TABLE `tbusuario` (
 
 LOCK TABLES `tbusuario` WRITE;
 /*!40000 ALTER TABLE `tbusuario` DISABLE KEYS */;
-INSERT INTO `tbusuario` VALUES (1,'Rodrigo Rodrigues','Diretor','a665a45920422f9d417e4867efdc4fb8a04a1f3fff1fa07e998e86f7f7a27ae3',_binary '','10394343476','002513202','M');
+INSERT INTO `tbusuario` VALUES (1,'Rodrigo Rodrigues','Diretor','a665a45920422f9d417e4867efdc4fb8a04a1f3fff1fa07e998e86f7f7a27ae3',_binary '','10394343476','002513202','M'),(2,'Caio Santos','Coordenador','8d969eef6ecad3c29a3a629280e686cf0c3f5d5a86aff3ca12020c923adc6c92',_binary '','00000000000','123123123','M');
 /*!40000 ALTER TABLE `tbusuario` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -632,4 +634,4 @@ SET character_set_client = @saved_cs_client;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2023-06-10 14:36:06
+-- Dump completed on 2023-06-13  0:08:07
