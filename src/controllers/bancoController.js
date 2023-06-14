@@ -336,9 +336,9 @@ module.exports = {
 
   login: async (req, res) => {
     try {
-      const { cpf, senha, userType } = req.body;
+      const { cpf, password, userType } = req.body;
 
-      const senhaHash = crypto.createHash("sha256").update(senha).digest("hex");
+      const senhaHash = crypto.createHash("sha256").update(password).digest("hex");
 
       const result = await bancoServices.login(cpf, userType);
 
