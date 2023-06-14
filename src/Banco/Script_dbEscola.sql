@@ -45,8 +45,6 @@ CREATE TABLE `tbaluno` (
   KEY `FK_Aluno_Mae` (`IdMae`),
   KEY `FK_Aluno_Endereco` (`IdEndereco`),
   CONSTRAINT `FK_Aluno_Endereco` FOREIGN KEY (`IdEndereco`) REFERENCES `tbendereco` (`IdEndereco`),
-  CONSTRAINT `FK_Aluno_Mae` FOREIGN KEY (`IdMae`) REFERENCES `tbresponsavel` (`IdResponsavel`),
-  CONSTRAINT `FK_Aluno_Pai` FOREIGN KEY (`IdPai`) REFERENCES `tbresponsavel` (`IdResponsavel`),
   CONSTRAINT `FK_Aluno_Responsavel` FOREIGN KEY (`IdResponsavel`) REFERENCES `tbresponsavel` (`IdResponsavel`)
 ) ENGINE=InnoDB AUTO_INCREMENT=82 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -407,7 +405,7 @@ CREATE TABLE `tbprofessor` (
   PRIMARY KEY (`IdProfessor`),
   KEY `FK_Professor_Endereco` (`idendereco`),
   CONSTRAINT `FK_Professor_Endereco` FOREIGN KEY (`idendereco`) REFERENCES `tbendereco` (`IdEndereco`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -416,7 +414,7 @@ CREATE TABLE `tbprofessor` (
 
 LOCK TABLES `tbprofessor` WRITE;
 /*!40000 ALTER TABLE `tbprofessor` DISABLE KEYS */;
-INSERT INTO `tbprofessor` VALUES (1,'Josemar da Silva','13970265029','123334445','emaildoprofessor@gmail.com','(84)999444487',NULL,_binary '','a665a45920422f9d417e4867efdc4fb8a04a1f3fff1fa07e998e86f7f7a27ae3','M'),(2,'Ademar de Lima','28183403069','998899090','emailademar@gmail.com','(84)99994444',NULL,_binary '','a665a45920422f9d417e4867efdc4fb8a04a1f3fff1fa07e998e86f7f7a27ae3','M');
+INSERT INTO `tbprofessor` VALUES (1,'Josemar da Silva','13970265029','123334445','emaildoprofessor@gmail.com','(84)999444487',NULL,_binary '','a665a45920422f9d417e4867efdc4fb8a04a1f3fff1fa07e998e86f7f7a27ae3','M'),(2,'Ademar de Lima','28183403069','998899090','emailademar@gmail.com','(84)99994444',NULL,_binary '','a665a45920422f9d417e4867efdc4fb8a04a1f3fff1fa07e998e86f7f7a27ae3','M'),(3,'josemar sa silva','28183403999','998899098','emailjosemar@gmail.com','(84)99994444',NULL,_binary '','a665a45920422f9d417e4867efdc4fb8a04a1f3fff1fa07e998e86f7f7a27ae3','M');
 /*!40000 ALTER TABLE `tbprofessor` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -670,4 +668,4 @@ SET character_set_client = @saved_cs_client;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2023-06-13 22:52:03
+-- Dump completed on 2023-06-14  3:00:35
