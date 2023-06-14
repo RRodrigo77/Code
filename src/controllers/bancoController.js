@@ -265,7 +265,7 @@ module.exports = {
       const { nome, cpf, rg, email, telefone, StAtivo, sexo, senha } = req.body;
 
       await bancoServices.insertProf(nome, cpf, rg, email, telefone, StAtivo,sexo, senha);
-
+      console.log(nome)
       res.send({ msg: "Professor cadastrado com sucesso" });
     } catch (error) {
       console.error(error);
@@ -345,11 +345,16 @@ module.exports = {
       if (result.length > 0) {
         if (result[0].senha === senhaHash) {
           res.send({ msg: "Usuário logado com sucesso" });
+          return true;
+          // res.send(true);
         } else {
           res.send({ msg: "Senha incorreta" });
+          return false;
+          // res.send(false);
         }
       } else {
         res.send({ msg: "Credenciais inválidas" });
+        return false;
       }
     } catch (error) {
       console.error(error);
