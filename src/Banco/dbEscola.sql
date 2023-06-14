@@ -433,15 +433,15 @@ SELECT
 		WHEN 'F' THEN 'Feminino'
 		WHEN 'O' THEN 'Outro' END AS sexo
 FROM TbAluno
-INNER JOIN TbAlunoTurma ON TbAlunoTurma.IdAluno = TbAluno.IdAluno
-INNER JOIN TbTurma ON TbTurma.IdTurma = TbAlunoTurma.IdTurma
-INNER JOIN TbSerie ON TbTurma.IdSerie = TbSerie.IdSerie
+LEFT JOIN TbAlunoTurma ON TbAlunoTurma.IdAluno = TbAluno.IdAluno
+LEFT JOIN TbTurma ON TbTurma.IdTurma = TbAlunoTurma.IdTurma
+LEFT JOIN TbSerie ON TbTurma.IdSerie = TbSerie.IdSerie
 LEFT JOIN TbResponsavel ON TbResponsavel.IdResponsavel = TbAluno.IdResponsavel
 LEFT JOIN TbResponsavel AS RP ON RP.IdResponsavel = TbAluno.IdPai AND RP.IdResponsavel = TbResponsavel.IdResponsavel
 LEFT JOIN TbResponsavel AS RM ON RM.IdResponsavel = TbAluno.IdMae AND RM.IdResponsavel = TbResponsavel.IdResponsavel;
 
 drop view Vw_dados_alunos
-SELECT * FROM Vw_dados_alunos
+SELECT * FROM Vw_dados_alunos WHERE cpf = '98712398737'
 select * from tbresponsavel
 
 SELECT 
@@ -494,18 +494,18 @@ SELECT NomeProfessor, cpf, RG, email, telefone,
 UPDATE TbAluno set senha = SHA2('12345', 256) where idaluno = 78
 
 select * from tbusuario;
-
+drop table tbnotas
 # Criada tabela para receber notas dos alunos
 CREATE TABLE TbNotas (
   IdNota INT PRIMARY KEY AUTO_INCREMENT,
-  IdTurma INT,
+  IdAlunoTurma INT,
   IdAluno INT,
   IdDisciplina INT,
   nota1 FLOAT,
   nota2 FLOAT,
   nota3 FLOAT,
   media FLOAT,
-  FOREIGN KEY (idturma) REFERENCES tbturma(IdTurma),
+  FOREIGN KEY (IdAlunoTurma) REFERENCES TbAlunoTurma(IdAlunoTurma),
   FOREIGN KEY (idaluno) REFERENCES tbaluno(IdAluno),
   FOREIGN KEY (iddisciplina) REFERENCES tbdisciplina(IdDisciplina)
 );
@@ -515,11 +515,46 @@ select * from tbalunoturma
 SELECT Tbturma.nometurma, tbaluno.nomealuno, tbalunoturma.stalunoturma FROM tbalunoturma
 INNER JOIN TbTurma ON TbTurma.IdTurma = TbAlunoTurma.IdTurma
 
-SELECT TbTurma.nometurma, tbaluno.nomealuno, 
+SELECT TbTurma.idturma, TbSerie.NomeSerie as "Série", TbTurma.nometurma as 'Nome da turma', tbaluno.nomealuno as 'Aluno', 
     CASE tbalunoturma.stalunoturma
           WHEN 1 THEN 'Cursando'
           WHEN 0 THEN 'Inativo'
-    END AS stalunoturma
+    END AS Situação
 FROM tbalunoturma
 INNER JOIN TbTurma ON TbTurma.IdTurma = tbalunoturma.IdTurma
 INNER JOIN tbaluno ON tbaluno.IdAluno = tbalunoturma.IdAluno
+right JOIN tbserie ON TbTurma.IdTurma = tbalunoturma.IdTurma
+
+
+SELECT TbTurma.idturma, TbSerie.NomeSerie AS "Série", TbTurma.nometurma AS 'Nome da turma', tbaluno.nomealuno AS 'Aluno', 
+    CASE tbalunoturma.stalunoturma
+          WHEN 1 THEN 'Cursando'
+          WHEN 0 THEN 'Inativo'
+    END AS Situação
+FROM tbalunoturma
+INNER JOIN TbTurma ON TbTurma.IdTurma = tbalunoturma.IdTurma
+INNER JOIN tbaluno ON tbaluno.IdAluno = tbalunoturma.IdAluno
+INNER JOIN tbserie ON TbTurma.IdSerie = tbserie.IdSerie
+
+SELECT * FROM tbprofessor
+INSERT INTO tbdisciplina (Nomedisciplina, sigla, stativo) VALUES 
+('Matemática', 'MAT', 1),
+('História', 'HIS', 1),
+('Geografia', 'GEO', 1),
+('Biologia', 'BIO', 1),
+('Física', 'FIS', 1)
+
+insert into tbnotas ()
+
+SELECT t.idturma, t.nometurma, t.siglaturma, c.nomecurso, s.nomeserie, p.nomeperiodo 
+	FROM Tbturma as t
+    left JOIN tbcurso AS c ON c.idcurso = t.idcurso
+    left JOIN tbserie AS s ON s.idserie = t.idserie
+    INNER JOIN tbperiodo AS p ON p.idperiodo = t.idperiodo
+
+
+
+
+
+
+
