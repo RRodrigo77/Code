@@ -334,9 +334,28 @@ module.exports = {
     }
   },
 
+
   login: async (req, res) => {
+
+
+    function maketoken (length) {
+      let result = ''
+      let characters = 
+      'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789'
+      let charactersLength = characters.length
+      for ( let i = 0; i < length; i++ ) {
+          result += characters.charAt(Math.floor(Math.random() * charactersLength))
+      }
+      return result
+    }
+
     try {
       const { cpf, password, userType } = req.body;
+
+      const user = req.body;
+
+      // variavel token para armazenar usuario e token de acesso
+      const token = { acess: maketoken(20), user }
 
       const senhaHash = crypto.createHash("sha256").update(password).digest("hex");
 
@@ -344,7 +363,7 @@ module.exports = {
 
       if (result.length > 0) {
         if (result[0].senha === senhaHash) {
-          res.send({ msg: "Usuário logado com sucesso" });
+          res.send({ msg: "Usuário logado com sucesso", token });
           // return true;
         } else {
           res.send({ msg: "Senha incorreta" });
@@ -361,5 +380,40 @@ module.exports = {
       console.error(error);
       res.status(500).send({ msg: "Ocorreu um erro ao fazer login" });
     }
-  }
+  },
+
+
+
+  // validateToken: async (req, res) => {
+
+  //   try {
+  //     const { token } = req.body;
+
+  //     // variavel token para armazenar usuario e token de acesso
+
+  //     const senhaHash = crypto.createHash("sha256").update(password).digest("hex");
+
+  //     const result = await bancoServices.login(cpf, userType);
+
+  //     if (result.length > 0) {
+  //       if (result[0].senha === senhaHash) {
+  //         res.send({ msg: "Usuário logado com sucesso", token });
+  //         // return true;
+  //       } else {
+  //         res.send({ msg: "Senha incorreta" });
+  //         return false;
+  //         // return res.send(false);
+  //       }
+  //     } else {
+  //       res.send({ msg: "Credenciais inválidas", token });
+  //       return false;
+  //       // return res.send(false);
+
+  //     }
+  //   } catch (error) {
+  //     console.error(error);
+  //     res.status(500).send({ msg: "Ocorreu um erro ao fazer login" });
+  //   }
+    
+  // }
 }
