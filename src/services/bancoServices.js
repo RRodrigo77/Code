@@ -308,4 +308,29 @@ module.exports = {
         });
     });
   },
+
+  Nota: (cpf) => {
+    return new Promise((aceito, rejeitado) => {
+      dbEscola.query(`
+        SELECT a.nomealuno, t.nometurma, d.nomedisciplina, n.nota1, n.nota2, n.nota3
+              FROM TbNotas n
+              JOIN tbaluno a ON n.IdAluno = a.idaluno
+              JOIN tbalunoturma at ON n.Idalunoturma = at.Idalunoturma
+              JOIN tbturma t ON at.IdTurma = t.idturma
+              JOIN tbdisciplina d ON n.IdDisciplina = d.IdDisciplina
+        `,
+        [cpf], (error, result) => {
+          if (error) {
+            rejeitado(error);
+            console.log(result,error)
+            return;
+          }
+          if (result.length > [0]) {
+            aceito(result);
+          } else {
+            aceito(false);
+          }
+        });
+    });
+  }
 }

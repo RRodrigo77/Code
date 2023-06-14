@@ -72,6 +72,23 @@ module.exports = {
     }
   },
 
+  Nota: async (req, res) => {
+    try {
+      let json = { error: '', result: [] };
+      let  cpf = req.params.cof;
+      let Aluno = await bancoServices.Nota(cpf);
+
+      if (Aluno) {
+        json.result = Aluno;
+      }
+
+      res.json(json);
+    } catch (error) {
+      console.error(error);
+      res.status(500).send({ msg: "Erro ao bsucar notas do aluno" });
+    }
+  },
+
   dadosAlunos: async (req, res) => {
     try {
       let json = { error: '', result: [] };

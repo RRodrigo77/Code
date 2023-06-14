@@ -55,7 +55,7 @@ CREATE TABLE `tbaluno` (
 
 LOCK TABLES `tbaluno` WRITE;
 /*!40000 ALTER TABLE `tbaluno` DISABLE KEYS */;
-INSERT INTO `tbaluno` VALUES (22,'Henrique','1995-01-11',NULL,NULL,NULL,'Henrique@gmail.com','12312312311','123456789',NULL,'(00)000000000',20230002,'M','a665a45920422f9d417e4867efdc4fb8a04a1f3fff1fa07e998e86f7f7a27ae3'),(23,'Miguel','1995-03-11',NULL,NULL,NULL,'miguel@gmail.com','341242144','002513202',NULL,'(84) 999434387',20220003,'M','a665a45920422f9d417e4867efdc4fb8a04a1f3fff1fa07e998e86f7f7a27ae3'),(43,'Rodrigo','1995-03-11',NULL,NULL,NULL,'rodrigo@gmail.com','10394343476','002513202',NULL,'(84) 999434387',20230004,'M','7795ef546202c111f3b6ba9d74fe2becb1a88e39244eb040f4f09405b180cefc'),(78,'Rodrigo teste insert','1995-01-11',NULL,NULL,NULL,'exemplo@exemplo.com','11111111111','123456710',NULL,'(00)000000000',20230006,'M','5994471abb01112afcc18159f6cc74b4f511b99806da59b3caf5a9c173cacfc5'),(80,'Samantha Costa Ribeiro','1993-07-27',NULL,NULL,NULL,'exemplo@gmail.com','98712398737','000000000',NULL,'(84)999999999',20230008,'F','bb7814513ea0991120e7f8b2e128db61621875e27e4f6168a729c23ba19796de'),(81,'Fabricio','1993-01-01',NULL,NULL,NULL,'fabricio@gmail.com','98712383766','000000000',NULL,'(84)999999999',20230009,'M','8d969eef6ecad3c29a3a629280e686cf0c3f5d5a86aff3ca12020c923adc6c92');
+INSERT INTO `tbaluno` VALUES (22,'Henrique','1995-01-11',NULL,NULL,NULL,'Henrique@gmail.com','12312312311','123456789',NULL,'(00)000000000',20230002,'M','a665a45920422f9d417e4867efdc4fb8a04a1f3fff1fa07e998e86f7f7a27ae3'),(23,'Miguel','1995-03-11',NULL,NULL,NULL,'miguel@gmail.com','341242144','002513202',NULL,'(84) 999434387',20220003,'M','a665a45920422f9d417e4867efdc4fb8a04a1f3fff1fa07e998e86f7f7a27ae3'),(43,'Rodrigo','1995-03-11',NULL,NULL,NULL,'rodrigo@gmail.com','10394343476','002513202',NULL,'(84) 999434387',20230004,'M','a665a45920422f9d417e4867efdc4fb8a04a1f3fff1fa07e998e86f7f7a27ae3'),(78,'Rodrigo teste insert','1995-01-11',NULL,NULL,NULL,'exemplo@exemplo.com','11111111111','123456710',NULL,'(00)000000000',20230006,'M','5994471abb01112afcc18159f6cc74b4f511b99806da59b3caf5a9c173cacfc5'),(80,'Samantha Costa Ribeiro','1993-07-27',NULL,NULL,NULL,'exemplo@gmail.com','98712398737','000000000',NULL,'(84)999999999',20230008,'F','bb7814513ea0991120e7f8b2e128db61621875e27e4f6168a729c23ba19796de'),(81,'Fabricio','1993-01-01',NULL,NULL,NULL,'fabricio@gmail.com','98712383766','000000000',NULL,'(84)999999999',20230009,'M','8d969eef6ecad3c29a3a629280e686cf0c3f5d5a86aff3ca12020c923adc6c92');
 /*!40000 ALTER TABLE `tbaluno` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -330,7 +330,7 @@ DROP TABLE IF EXISTS `tbnotas`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `tbnotas` (
   `IdNota` int NOT NULL AUTO_INCREMENT,
-  `IdAlunoTurma` int DEFAULT NULL,
+  `Idalunoturma` int DEFAULT NULL,
   `IdAluno` int DEFAULT NULL,
   `IdDisciplina` int DEFAULT NULL,
   `nota1` float DEFAULT NULL,
@@ -338,13 +338,13 @@ CREATE TABLE `tbnotas` (
   `nota3` float DEFAULT NULL,
   `media` float DEFAULT NULL,
   PRIMARY KEY (`IdNota`),
-  KEY `IdAlunoTurma` (`IdAlunoTurma`),
+  KEY `Idalunoturma` (`Idalunoturma`),
   KEY `IdAluno` (`IdAluno`),
   KEY `IdDisciplina` (`IdDisciplina`),
-  CONSTRAINT `tbnotas_ibfk_1` FOREIGN KEY (`IdAlunoTurma`) REFERENCES `tbalunoturma` (`IdAlunoTurma`),
+  CONSTRAINT `tbnotas_ibfk_1` FOREIGN KEY (`Idalunoturma`) REFERENCES `tbalunoturma` (`IdAlunoTurma`),
   CONSTRAINT `tbnotas_ibfk_2` FOREIGN KEY (`IdAluno`) REFERENCES `tbaluno` (`IdAluno`),
   CONSTRAINT `tbnotas_ibfk_3` FOREIGN KEY (`IdDisciplina`) REFERENCES `tbdisciplina` (`IdDisciplina`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -353,6 +353,7 @@ CREATE TABLE `tbnotas` (
 
 LOCK TABLES `tbnotas` WRITE;
 /*!40000 ALTER TABLE `tbnotas` DISABLE KEYS */;
+INSERT INTO `tbnotas` VALUES (1,2,43,1,7.5,8,10,NULL);
 /*!40000 ALTER TABLE `tbnotas` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -668,4 +669,4 @@ SET character_set_client = @saved_cs_client;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2023-06-14  3:00:35
+-- Dump completed on 2023-06-14 19:25:12

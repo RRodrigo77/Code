@@ -491,24 +491,7 @@ SELECT NomeProfessor, cpf, RG, email, telefone,
     FROM TbProfessor
     WHERE cpf = "28183403069"
     
-UPDATE TbAluno set senha = SHA2('12345', 256) where idaluno = 78
-
-select * from tbusuario;
-drop table tbnotas
-# Criada tabela para receber notas dos alunos
-CREATE TABLE TbNotas (
-  IdNota INT PRIMARY KEY AUTO_INCREMENT,
-  IdAlunoTurma INT,
-  IdAluno INT,
-  IdDisciplina INT,
-  nota1 FLOAT,
-  nota2 FLOAT,
-  nota3 FLOAT,
-  media FLOAT,
-  FOREIGN KEY (IdAlunoTurma) REFERENCES TbAlunoTurma(IdAlunoTurma),
-  FOREIGN KEY (idaluno) REFERENCES tbaluno(IdAluno),
-  FOREIGN KEY (iddisciplina) REFERENCES tbdisciplina(IdDisciplina)
-);
+UPDATE TbAluno set senha = SHA2('123', 256) where idaluno = 43
 
 select * from tbalunoturma
 
@@ -525,6 +508,16 @@ INNER JOIN TbTurma ON TbTurma.IdTurma = tbalunoturma.IdTurma
 INNER JOIN tbaluno ON tbaluno.IdAluno = tbalunoturma.IdAluno
 right JOIN tbserie ON TbTurma.IdTurma = tbalunoturma.IdTurma
 
+SELECT * FROM tbprofessor
+
+INSERT INTO tbdisciplina (Nomedisciplina, sigla, stativo) VALUES 
+('Matemática', 'MAT', 1),
+('História', 'HIS', 1),
+('Geografia', 'GEO', 1),
+('Biologia', 'BIO', 1),
+('Física', 'FIS', 1)
+
+insert into tbnotas ()
 
 SELECT TbTurma.idturma, TbSerie.NomeSerie AS "Série", TbTurma.nometurma AS 'Nome da turma', tbaluno.nomealuno AS 'Aluno', 
     CASE tbalunoturma.stalunoturma
@@ -536,16 +529,6 @@ INNER JOIN TbTurma ON TbTurma.IdTurma = tbalunoturma.IdTurma
 INNER JOIN tbaluno ON tbaluno.IdAluno = tbalunoturma.IdAluno
 INNER JOIN tbserie ON TbTurma.IdSerie = tbserie.IdSerie
 
-SELECT * FROM tbprofessor
-INSERT INTO tbdisciplina (Nomedisciplina, sigla, stativo) VALUES 
-('Matemática', 'MAT', 1),
-('História', 'HIS', 1),
-('Geografia', 'GEO', 1),
-('Biologia', 'BIO', 1),
-('Física', 'FIS', 1)
-
-insert into tbnotas ()
-
 SELECT t.idturma, t.nometurma, t.siglaturma, c.nomecurso, s.nomeserie, p.nomeperiodo 
 	FROM Tbturma as t
     left JOIN tbcurso AS c ON c.idcurso = t.idcurso
@@ -553,8 +536,34 @@ SELECT t.idturma, t.nometurma, t.siglaturma, c.nomecurso, s.nomeserie, p.nomeper
     INNER JOIN tbperiodo AS p ON p.idperiodo = t.idperiodo
 
 
+select * from tbnotas
+
+select * from tbalunoturma
+drop table tbnotas
+# Criada tabela para receber notas dos alunos
+CREATE TABLE TbNotas (
+  IdNota INT PRIMARY KEY AUTO_INCREMENT,
+  Idalunoturma INT,
+  IdAluno INT,
+  IdDisciplina INT,
+  nota1 FLOAT,
+  nota2 FLOAT,
+  nota3 FLOAT,
+  media FLOAT,
+  FOREIGN KEY (Idalunoturma) REFERENCES tbalunoturma(Idalunoturma),
+  FOREIGN KEY (Idaluno) REFERENCES tbaluno(idaluno),
+  FOREIGN KEY (iddisciplina) REFERENCES tbdisciplina(IdDisciplina)
+);
+
+INSERT INTO TbNotas (Idaluno, Idalunoturma, IdDisciplina, nota1, nota2, nota3) values(43, 2, 1, 7.5, 8, 10)
+SELECT * FROM TBNOTAS
 
 
-
-
+SELECT a.nomealuno, t.nometurma, d.nomedisciplina, n.nota1, n.nota2, n.nota3
+FROM TbNotas n
+JOIN tbaluno a ON n.IdAluno = a.idaluno
+JOIN tbalunoturma at ON n.Idalunoturma = at.Idalunoturma
+JOIN tbturma t ON at.IdTurma = t.idturma
+JOIN tbdisciplina d ON n.IdDisciplina = d.IdDisciplina
+WHERE a.idaluno = '43'
 
