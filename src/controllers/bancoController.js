@@ -345,16 +345,17 @@ module.exports = {
       if (result.length > 0) {
         if (result[0].senha === senhaHash) {
           res.send({ msg: "Usuário logado com sucesso" });
-          return true;
-          // res.send(true);
+          // return true;
         } else {
           res.send({ msg: "Senha incorreta" });
           return false;
-          // res.send(false);
+          // return res.send(false);
         }
       } else {
         res.send({ msg: "Credenciais inválidas" });
         return false;
+        // return res.send(false);
+
       }
     } catch (error) {
       console.error(error);

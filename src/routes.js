@@ -19,7 +19,7 @@ router.post('/insertUsuario', bancoController.insertUsuario);   // Cadastro de U
 // Updates de cadastros já existenstes
 router.post('/updateAluno', bancoController.updateAluno); // Cadastro de alunos
 router.post('/updateProf', bancoController.updateProf);   // Cadastro de Professor
-router.post('/updatePesp', bancoController.updatePesp);   // Cadastro de Responsáveil
+router.post('/updateResp', bancoController.updatePesp);   // Cadastro de Responsáveil
 // implementar update para dados de usuário
 
 //  Autencitação para login
