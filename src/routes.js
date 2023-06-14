@@ -8,7 +8,7 @@ const bancoController = require('./controllers/bancoController');
 router.get('/alunodados/:cpf', bancoController.dadosAlunos);        // Monstra os dados dos alunos
 router.get('/dadosresp/:cpf', bancoController.dadosResponsavel);    // Monstra os dados dos responsáveis
 router.get('/dadosProf/:cpf', bancoController.dadosProf);           // Monstra os dados dos Professores
-// implementar dados usuário
+// implementar dados usuário usuário
 
 // Inserção de cadastros no banco
 router.post('/insertAluno', bancoController.insertAluno);       // Cadastro de alunos

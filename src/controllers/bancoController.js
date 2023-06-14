@@ -113,11 +113,11 @@ module.exports = {
           },
           {
             label: "Turma",
-            value: Aluno[i].NomeTurma
+            value: Aluno[i].NomeTurma ? Aluno[i].NomeTurma : '-'
           },
           {
             label: "Série",
-            value: Aluno[i].NomeSerie
+            value: Aluno[i].NomeSerie ? Aluno[i].NomeSerie : '-'
           },
           {
             label: "Responsável",

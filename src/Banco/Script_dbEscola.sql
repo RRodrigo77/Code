@@ -159,7 +159,7 @@ CREATE TABLE `tbdisciplina` (
   `Sigla` varchar(10) NOT NULL,
   `StAtivo` bit(1) NOT NULL,
   PRIMARY KEY (`IdDisciplina`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -168,6 +168,7 @@ CREATE TABLE `tbdisciplina` (
 
 LOCK TABLES `tbdisciplina` WRITE;
 /*!40000 ALTER TABLE `tbdisciplina` DISABLE KEYS */;
+INSERT INTO `tbdisciplina` VALUES (1,'Matemática','MAT',_binary ''),(2,'História','HIS',_binary ''),(3,'Geografia','GEO',_binary ''),(4,'Biologia','BIO',_binary ''),(5,'Física','FIS',_binary '');
 /*!40000 ALTER TABLE `tbdisciplina` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -320,6 +321,41 @@ CREATE TABLE `tbgrade` (
 LOCK TABLES `tbgrade` WRITE;
 /*!40000 ALTER TABLE `tbgrade` DISABLE KEYS */;
 /*!40000 ALTER TABLE `tbgrade` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `tbnotas`
+--
+
+DROP TABLE IF EXISTS `tbnotas`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `tbnotas` (
+  `IdNota` int NOT NULL AUTO_INCREMENT,
+  `IdAlunoTurma` int DEFAULT NULL,
+  `IdAluno` int DEFAULT NULL,
+  `IdDisciplina` int DEFAULT NULL,
+  `nota1` float DEFAULT NULL,
+  `nota2` float DEFAULT NULL,
+  `nota3` float DEFAULT NULL,
+  `media` float DEFAULT NULL,
+  PRIMARY KEY (`IdNota`),
+  KEY `IdAlunoTurma` (`IdAlunoTurma`),
+  KEY `IdAluno` (`IdAluno`),
+  KEY `IdDisciplina` (`IdDisciplina`),
+  CONSTRAINT `tbnotas_ibfk_1` FOREIGN KEY (`IdAlunoTurma`) REFERENCES `tbalunoturma` (`IdAlunoTurma`),
+  CONSTRAINT `tbnotas_ibfk_2` FOREIGN KEY (`IdAluno`) REFERENCES `tbaluno` (`IdAluno`),
+  CONSTRAINT `tbnotas_ibfk_3` FOREIGN KEY (`IdDisciplina`) REFERENCES `tbdisciplina` (`IdDisciplina`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `tbnotas`
+--
+
+LOCK TABLES `tbnotas` WRITE;
+/*!40000 ALTER TABLE `tbnotas` DISABLE KEYS */;
+/*!40000 ALTER TABLE `tbnotas` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -620,7 +656,7 @@ SET character_set_client = @saved_cs_client;
 /*!50001 SET collation_connection      = utf8mb4_0900_ai_ci */;
 /*!50001 CREATE ALGORITHM=UNDEFINED */
 /*!50013 DEFINER=`root`@`localhost` SQL SECURITY DEFINER */
-/*!50001 VIEW `vw_dados_alunos` AS select `tbaluno`.`nomeAluno` AS `NomeAluno`,`tbaluno`.`telefone` AS `telefone`,`tbaluno`.`CPF` AS `cpf`,`tbaluno`.`RG` AS `rg`,date_format(`tbaluno`.`data_nascimento`,'%d/%m/%Y') AS `data_nascimento`,`tbaluno`.`email` AS `email`,`tbaluno`.`matricula` AS `matricula`,`tbturma`.`NomeTurma` AS `NomeTurma`,`tbserie`.`NomeSerie` AS `NomeSerie`,`tbresponsavel`.`NomeR` AS `NomeResponsavel`,`rp`.`NomeR` AS `NomePai`,`rm`.`NomeR` AS `NomeMae`,(case `tbaluno`.`sexo` when 'M' then 'Masculino' when 'F' then 'Feminino' when 'O' then 'Outro' end) AS `sexo` from ((((((`tbaluno` join `tbalunoturma` on((`tbalunoturma`.`IdAluno` = `tbaluno`.`IdAluno`))) join `tbturma` on((`tbturma`.`IdTurma` = `tbalunoturma`.`IdTurma`))) join `tbserie` on((`tbturma`.`IdSerie` = `tbserie`.`IdSerie`))) left join `tbresponsavel` on((`tbresponsavel`.`IdResponsavel` = `tbaluno`.`IdResponsavel`))) left join `tbresponsavel` `rp` on(((`rp`.`IdResponsavel` = `tbaluno`.`IdPai`) and (`rp`.`IdResponsavel` = `tbresponsavel`.`IdResponsavel`)))) left join `tbresponsavel` `rm` on(((`rm`.`IdResponsavel` = `tbaluno`.`IdMae`) and (`rm`.`IdResponsavel` = `tbresponsavel`.`IdResponsavel`)))) */;
+/*!50001 VIEW `vw_dados_alunos` AS select `tbaluno`.`nomeAluno` AS `NomeAluno`,`tbaluno`.`telefone` AS `telefone`,`tbaluno`.`CPF` AS `cpf`,`tbaluno`.`RG` AS `rg`,date_format(`tbaluno`.`data_nascimento`,'%d/%m/%Y') AS `data_nascimento`,`tbaluno`.`email` AS `email`,`tbaluno`.`matricula` AS `matricula`,`tbturma`.`NomeTurma` AS `NomeTurma`,`tbserie`.`NomeSerie` AS `NomeSerie`,`tbresponsavel`.`NomeR` AS `NomeResponsavel`,`rp`.`NomeR` AS `NomePai`,`rm`.`NomeR` AS `NomeMae`,(case `tbaluno`.`sexo` when 'M' then 'Masculino' when 'F' then 'Feminino' when 'O' then 'Outro' end) AS `sexo` from ((((((`tbaluno` left join `tbalunoturma` on((`tbalunoturma`.`IdAluno` = `tbaluno`.`IdAluno`))) left join `tbturma` on((`tbturma`.`IdTurma` = `tbalunoturma`.`IdTurma`))) left join `tbserie` on((`tbturma`.`IdSerie` = `tbserie`.`IdSerie`))) left join `tbresponsavel` on((`tbresponsavel`.`IdResponsavel` = `tbaluno`.`IdResponsavel`))) left join `tbresponsavel` `rp` on(((`rp`.`IdResponsavel` = `tbaluno`.`IdPai`) and (`rp`.`IdResponsavel` = `tbresponsavel`.`IdResponsavel`)))) left join `tbresponsavel` `rm` on(((`rm`.`IdResponsavel` = `tbaluno`.`IdMae`) and (`rm`.`IdResponsavel` = `tbresponsavel`.`IdResponsavel`)))) */;
 /*!50001 SET character_set_client      = @saved_cs_client */;
 /*!50001 SET character_set_results     = @saved_cs_results */;
 /*!50001 SET collation_connection      = @saved_col_connection */;
@@ -634,4 +670,4 @@ SET character_set_client = @saved_cs_client;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2023-06-13  0:08:07
+-- Dump completed on 2023-06-13 22:52:03

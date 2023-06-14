@@ -495,4 +495,31 @@ UPDATE TbAluno set senha = SHA2('12345', 256) where idaluno = 78
 
 select * from tbusuario;
 
+# Criada tabela para receber notas dos alunos
+CREATE TABLE TbNotas (
+  IdNota INT PRIMARY KEY AUTO_INCREMENT,
+  IdTurma INT,
+  IdAluno INT,
+  IdDisciplina INT,
+  nota1 FLOAT,
+  nota2 FLOAT,
+  nota3 FLOAT,
+  media FLOAT,
+  FOREIGN KEY (idturma) REFERENCES tbturma(IdTurma),
+  FOREIGN KEY (idaluno) REFERENCES tbaluno(IdAluno),
+  FOREIGN KEY (iddisciplina) REFERENCES tbdisciplina(IdDisciplina)
+);
 
+select * from tbalunoturma
+
+SELECT Tbturma.nometurma, tbaluno.nomealuno, tbalunoturma.stalunoturma FROM tbalunoturma
+INNER JOIN TbTurma ON TbTurma.IdTurma = TbAlunoTurma.IdTurma
+
+SELECT TbTurma.nometurma, tbaluno.nomealuno, 
+    CASE tbalunoturma.stalunoturma
+          WHEN 1 THEN 'Cursando'
+          WHEN 0 THEN 'Inativo'
+    END AS stalunoturma
+FROM tbalunoturma
+INNER JOIN TbTurma ON TbTurma.IdTurma = tbalunoturma.IdTurma
+INNER JOIN tbaluno ON tbaluno.IdAluno = tbalunoturma.IdAluno
